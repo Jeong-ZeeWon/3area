@@ -1,0 +1,20 @@
+# clasp (스크립트 ID가 들어 있으므로 올리지 않습니다)
+.clasp.json
+.clasprc.json
+
+# 로컬 작업물
+*.log
+*.xlsx
+*.csv
+*.bak
+~$*
+
+# 편집기 / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 의존성
+node_modules/
