@@ -84,7 +84,30 @@ function doGet(e) {
 
 function ss_() {
   const id = CONFIG.SPREADSHEET_ID || prop_('SPREADSHEET_ID');
-  return id ? SpreadsheetApp.openById(id) : SpreadsheetApp.getActiveSpreadsheet();
+  if (id) return SpreadsheetApp.openById(id);
+
+  const book = SpreadsheetApp.getActiveSpreadsheet();
+  if (book) return book;
+
+  throw new Error(
+    '출석부 스프레드시트를 찾을 수 없습니다. 이 스크립트가 시트에 붙어 있지 않은 ' +
+    '독립 프로젝트라면, setSpreadsheetId() 함수 안에 시트 ID를 넣고 편집기에서 ' +
+    '한 번 실행해 주세요.');
+}
+
+/**
+ * 독립 프로젝트로 만든 경우 출석부 시트 ID를 한 번 저장해 둡니다.
+ * 시트 주소 https://docs.google.com/spreadsheets/d/<이부분>/edit 의 가운데 문자열입니다.
+ * 아래 id 에 넣고 편집기에서 이 함수를 한 번 실행하세요.
+ */
+function setSpreadsheetId() {
+  const id = '';  // ← 여기에 출석부 스프레드시트 ID를 넣으세요
+
+  if (!id) throw new Error('setSpreadsheetId() 안의 id 에 스프레드시트 ID를 먼저 넣어 주세요.');
+  const book = SpreadsheetApp.openById(id);   // 잘못된 ID면 여기서 바로 오류가 납니다
+  PropertiesService.getScriptProperties().setProperty('SPREADSHEET_ID', id);
+  Logger.log('저장했습니다: %s (시트 %s개)', book.getName(), book.getSheets().length);
+  return book.getName();
 }
 
 function sheetByRegionId_(id) {
@@ -361,18 +384,33 @@ function writeLog_(layout, byCol) {
 /* ------------------------------ 배부용 도구 ------------------------------ */
 
 function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu('출석 체크 앱')
-    .addItem('지역장 배부 링크 만들기', 'makeRegionLinks')
-    .addItem('출석부 구조 점검', 'checkStructure')
-    .addToUi();
+  try {
+    SpreadsheetApp.getUi()
+      .createMenu('출석 체크 앱')
+      .addItem('지역장 배부 링크 만들기', 'makeRegionLinks')
+      .addItem('출석부 구조 점검', 'checkStructure')
+      .addToUi();
+  } catch (err) {
+    // 독립 프로젝트에는 메뉴를 붙일 수 없습니다. 편집기에서 함수를 직접 실행하세요.
+  }
+}
+
+/** 시트 화면이 없을 때는 조용히 넘어가는 알림 */
+function notify_(title, msg) {
+  Logger.log('%s\n%s', title, msg);
+  try {
+    const ui = SpreadsheetApp.getUi();
+    ui.alert(title, msg, ui.ButtonSet.OK);
+  } catch (err) {
+    // 편집기에서 실행한 경우: 실행 기록(Logger)으로만 확인합니다.
+  }
 }
 
 /** 지역별 개인 링크(?r=시트이름)를 _배부링크 시트에 정리해 줍니다 */
 function makeRegionLinks() {
   const url = ScriptApp.getService().getUrl();
   if (!url) {
-    SpreadsheetApp.getUi().alert('먼저 [배포] → [새 배포] 로 웹 앱을 배포해 주세요.');
+    notify_('배포가 필요합니다', '먼저 [배포] → [새 배포] 로 웹 앱을 배포해 주세요.');
     return;
   }
   const book = ss_();
@@ -417,7 +455,6 @@ function checkStructure() {
     }
   });
   const msg = lines.join('\n');
-  Logger.log(msg);
-  try { SpreadsheetApp.getUi().alert('출석부 구조 점검', msg, SpreadsheetApp.getUi().ButtonSet.OK); } catch (e) {}
+  notify_('출석부 구조 점검', msg);
   return msg;
 }

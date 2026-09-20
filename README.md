@@ -50,6 +50,8 @@
 4. 저장한 뒤 **배포 → 새 배포 → 웹 앱** 을 선택하고, 실행 계정은 `나`, 액세스 권한은 `모든 사용자` 로 두고 배포합니다.
 5. 첫 배포에서는 권한 승인 화면이 나옵니다. **고급 → 안전하지 않은 페이지로 이동** 을 눌러 승인합니다.
 
+1단계처럼 **시트에서** Apps Script 를 열면 스크립트가 그 시트에 붙으므로 시트 ID를 적을 필요가 없습니다. 반대로 script.google.com 이나 드라이브에서 새 프로젝트를 만든 **독립 스크립트**라면 `SpreadsheetApp.getActiveSpreadsheet()` 가 `null` 이 되어 `Cannot read properties of null (reading 'getSheets')` 오류가 납니다. 이때는 `setSpreadsheetId()` 함수 안의 `id` 에 출석부 시트 ID를 넣고 편집기에서 한 번 실행하면 스크립트 속성에 저장되어 정상 동작합니다. 독립 스크립트에서는 시트 상단 메뉴가 생기지 않으므로, `makeRegionLinks` 와 `checkStructure` 는 편집기의 함수 실행으로 돌리고 결과는 실행 기록에서 확인하십시오.
+
 clasp 를 쓴다면 `.clasp.json.example` 을 `.clasp.json` 으로 복사하고 스크립트 ID를 넣은 뒤 `clasp push` 하면 됩니다.
 
 ## 배부
