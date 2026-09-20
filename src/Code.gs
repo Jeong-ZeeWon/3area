@@ -161,6 +161,15 @@ function parseSheet_(sheet) {
   }
 
   const values = sheet.getRange(1, 1, lastRow, lastCol).getValues();
+
+  // B열(순원) 이름이 굵은 글씨면 순장으로 봅니다. 시트 서식을 그대로 읽습니다.
+  let weights = [];
+  try {
+    weights = sheet.getRange(1, 2, lastRow, 1).getFontWeights();
+  } catch (err) {
+    weights = [];
+  }
+
   const headerRow = findHeaderRow_(values.slice(0, Math.min(8, lastRow)));
   if (headerRow === -1) {
     throw new Error('머리글(구분·순원) 행을 찾을 수 없습니다: ' + sheet.getName());
@@ -200,10 +209,12 @@ function parseSheet_(sheet) {
       cur = { name: '명단', members: [] };
       groups.push(cur);
     }
+    const w = weights[r] ? String(weights[r][0] == null ? '' : weights[r][0]).toLowerCase() : '';
     cur.members.push({
       row: row,
       name: name,
       phone: String(values[r][2] == null ? '' : values[r][2]).trim(),
+      lead: (w === 'bold' || w === '700' || w === 'bolder'),
       marks: dates.map(function (d) {
         return String(values[r][d.col - 1] == null ? '' : values[r][d.col - 1]).trim() !== '';
       })
@@ -392,9 +403,15 @@ function checkStructure() {
     try {
       const d = parseSheet_(sheetByRegionId_(r.id));
       const total = d.groups.reduce(function (s, g) { return s + g.members.length; }, 0);
+      const leads = [];
+      d.groups.forEach(function (g) {
+        if (g.name === '지역장') return;
+        g.members.forEach(function (m) { if (m.lead) leads.push(g.name + ' ' + m.name); });
+      });
       lines.push(d.title + ' — 지역장 ' + (d.leader || '미지정') +
         ' / 순 ' + d.groups.length + '개 / 인원 ' + total + '명 / 날짜 ' +
-        d.dates.length + '개 (' + d.dates[0].label + ' ~ ' + d.dates[d.dates.length - 1].label + ')');
+        d.dates.length + '개 (' + d.dates[0].label + ' ~ ' + d.dates[d.dates.length - 1].label + ')' +
+        '\n    순장(굵은 글씨): ' + (leads.length ? leads.join(', ') : '없음'));
     } catch (err) {
       lines.push(r.title + ' — 오류: ' + err.message);
     }
