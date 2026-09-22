@@ -282,7 +282,8 @@ button{font-family:inherit; color:inherit;}
 .sdot{width:9px; height:9px; border-radius:50%; background:var(--line); flex:0 0 auto;}
 .status.saving{color:var(--gold);} .status.saving .sdot{background:var(--gold); animation:pulse 1s infinite;}
 .status.saved{color:var(--brand);} .status.saved .sdot{background:var(--brand);}
-.status.error{color:var(--rose); font-weight:700;} .status.error .sdot{background:var(--rose);}
+.status.error{color:var(--rose); font-weight:700; cursor:pointer;} .status.error .sdot{background:var(--rose);}
+.footbar-in{min-height:36px;}
 @keyframes pulse{0%,100%{opacity:1} 50%{opacity:.25}}
 .btn{
   flex:0 0 auto; background:linear-gradient(140deg, var(--brand), var(--brand-dark));
@@ -309,6 +310,115 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 .spin{width:28px; height:28px; margin:0 auto 13px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--brand); animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .note{text-align:center; color:var(--muted); font-size:11.5px; padding:2px 0 18px;}
+/* ========================= 출석 현황 ========================= */
+:root{
+  --good:#2E7D5B; --good-soft:rgba(46,125,91,.12);
+  --mid:#A87B22;  --mid-soft:rgba(176,132,45,.15);
+  --low:#B04936;  --low-soft:rgba(176,73,54,.12);
+  --dot-off:#e6dfd4;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --good:#5cb58a; --mid:#d4a14a; --low:#e07a64; --dot-off:#353c41; }
+}
+
+.ovtile{grid-column:1 / -1;}
+.ovtile .rbadge svg{display:block;}
+.ovtile .rtxt span{white-space:normal;}
+
+.ov-card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-xl);
+  box-shadow:var(--sh-1); margin-bottom:14px; overflow:hidden;
+}
+#ovMembers{scroll-margin-top:158px;}
+.ov-head{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 10px; padding:16px 18px 2px;}
+.ov-head h2{margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.025em;}
+.ov-head span{font-size:12px; color:var(--muted);}
+
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:12px 14px 0;}
+.stat{background:var(--card-2); border:1px solid var(--line-2); border-radius:var(--r-md); padding:11px 12px 10px;}
+.stat small{display:block; font-size:11px; color:var(--muted); font-weight:500;}
+.stat b{display:block; font-size:21px; font-weight:700; letter-spacing:-.03em; margin-top:1px; color:var(--ink);}
+.stat b em{font-style:normal; font-size:12px; color:var(--muted); font-weight:500; margin-left:2px;}
+.stat.main b{color:var(--brand);}
+
+.barwrap{overflow-x:auto; scrollbar-width:none; padding:14px 14px 14px;}
+.barwrap::-webkit-scrollbar{display:none;}
+.bars{display:flex; align-items:flex-end; gap:6px; height:128px; min-width:100%;}
+.bar{flex:1 0 30px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;}
+.bar b{font-size:11px; font-weight:700; color:var(--ink-2); margin-bottom:4px;}
+.bar i{display:block; width:68%; max-width:30px; border-radius:6px 6px 3px 3px; background:var(--brand); min-height:3px; transition:height .45s cubic-bezier(.4,0,.2,1);}
+.bar small{font-size:10.5px; color:var(--muted); margin-top:6px; white-space:nowrap;}
+.bar.none b{color:var(--muted); font-weight:500;}
+.bar.none i{background:var(--line);}
+.bar.last i{background:var(--good);}
+.bars-empty{width:100%; text-align:center; align-self:center; color:var(--muted); font-size:13px;}
+
+.rlist{padding:6px 8px 10px;}
+.rrow{
+  display:flex; align-items:center; gap:11px; width:100%; background:transparent; border:0;
+  border-radius:var(--r-md); padding:9px 10px; cursor:pointer; text-align:left; transition:background .15s;
+}
+.rrow:active{background:var(--card-2);}
+.rrow .rbadge, .o-region .rbadge{width:30px; height:30px; border-radius:9px; font-size:13px;}
+.rr-main{display:block; flex:1; min-width:0;}
+.rr-top{display:flex; align-items:baseline; gap:6px; margin-bottom:5px; min-width:0;}
+.rr-top b{font-size:13.5px; font-weight:700; white-space:nowrap;}
+.rr-top span{font-size:11.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.rr-bar{display:block; height:7px; background:var(--line-2); border-radius:99px; overflow:hidden;}
+.rr-bar i{display:block; height:100%; border-radius:99px; background:var(--tile); transition:width .45s cubic-bezier(.4,0,.2,1);}
+.rr-pct{flex:0 0 auto; width:44px; text-align:right; font-size:14px; font-weight:700;}
+
+.ov-tools{padding:12px 14px 8px;}
+.fchips{position:relative; display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding-bottom:10px;}
+.fchips::-webkit-scrollbar{display:none;}
+.fchip{
+  flex:0 0 auto; display:inline-flex; align-items:center; gap:6px;
+  border:1.5px solid var(--line); background:var(--card-2); border-radius:99px;
+  padding:7px 12px; font-size:13px; font-weight:500; cursor:pointer; white-space:nowrap;
+  transition:background .15s, border-color .15s, color .15s;
+}
+.fchip i{width:8px; height:8px; border-radius:50%; background:var(--tile);}
+.fchip.on{background:var(--brand); border-color:var(--brand); color:#fff; font-weight:700;}
+.fchip.on i{background:#fff;}
+.seg{display:flex; background:var(--card-2); border:1px solid var(--line); border-radius:12px; padding:3px;}
+.seg button{
+  flex:1; border:0; background:transparent; border-radius:9px; padding:8px 6px;
+  font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; transition:background .15s, color .15s;
+}
+.seg button.on{background:var(--brand); color:#fff; font-weight:700; box-shadow:0 2px 8px var(--brand-ring);}
+.ov-legend{display:flex; gap:13px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); padding:11px 2px 0;}
+.ov-legend span{display:inline-flex; align-items:center; gap:5px;}
+
+.olist{padding-bottom:4px;}
+.o-region{
+  display:flex; align-items:center; gap:9px; padding:16px 16px 9px;
+  font-size:14.5px; font-weight:700; letter-spacing:-.02em;
+}
+.o-region .rbadge{width:26px; height:26px; border-radius:8px; font-size:12px;}
+.o-region span{font-size:12px; color:var(--muted); font-weight:500; margin-left:auto;}
+.o-group{
+  padding:7px 16px; font-size:12px; font-weight:700; color:var(--ink-2);
+  background:var(--card-2); border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
+}
+.o-group em{font-style:normal; font-weight:500; color:var(--muted); margin-left:4px;}
+.orow{display:flex; align-items:center; gap:12px; padding:10px 16px;}
+.orow + .orow{border-top:1px solid var(--line-2);}
+.omain{flex:1; min-width:0;}
+.oname{font-size:15px; font-weight:500; letter-spacing:-.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ometa{font-size:11.5px; color:var(--muted); margin-left:6px; font-weight:400;}
+.dots{display:flex; flex-wrap:wrap; gap:3px; margin-top:6px;}
+.dot{display:inline-block; width:11px; height:11px; border-radius:3px; background:var(--dot-off);}
+.dot.on{background:var(--good);}
+.dot.na{background:transparent; border:1px dashed var(--chk);}
+.orate{flex:0 0 auto; min-width:60px; text-align:center; border-radius:12px; padding:6px 8px;}
+.orate b{display:block; font-size:15.5px; font-weight:700; line-height:1.15;}
+.orate small{display:block; font-size:10.5px; margin-top:1px; opacity:.85;}
+.orate.hi{background:var(--good-soft); color:var(--good);}
+.orate.md{background:var(--mid-soft); color:var(--mid);}
+.orate.lo{background:var(--low-soft); color:var(--low);}
+.orate.no{background:var(--card-2); color:var(--muted);}
+.ov-note{font-size:11.5px; color:var(--muted); padding:2px 6px 20px; line-height:1.65; margin:0;}
+
 .hidden{display:none !important;}
 </style>
 </head>
@@ -417,14 +527,46 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     <p class="note" id="note"></p>
   </section>
 
+  <section id="viewOverview" class="hidden">
+    <div class="ov-card">
+      <div class="ov-head"><h2 id="ovTitle">교구 전체</h2><span id="ovAt"></span></div>
+      <div class="stats" id="ovStats"></div>
+      <div class="barwrap" id="ovBarsWrap"><div class="bars" id="ovBars"></div></div>
+    </div>
+
+    <div class="ov-card">
+      <div class="ov-head"><h2>지역별 출석률</h2><span>누르면 그 지역 명단으로</span></div>
+      <div class="rlist" id="ovRegions"></div>
+    </div>
+
+    <div class="ov-card" id="ovMembers">
+      <div class="ov-head"><h2>순원별 출결</h2><span id="ovCount"></span></div>
+      <div class="ov-tools">
+        <div class="fchips" id="ovChips"></div>
+        <div class="seg">
+          <button id="segRoster" class="on" onclick="setOvSort('roster')">명단 순서</button>
+          <button id="segLow" onclick="setOvSort('low')">출석 낮은 순</button>
+        </div>
+        <div class="ov-legend">
+          <span><i class="dot on"></i>출석</span>
+          <span><i class="dot"></i>결석</span>
+          <span><i class="dot na"></i>미기록</span>
+          <span>칸 하나가 주일 하루, 오른쪽이 최근</span>
+        </div>
+      </div>
+      <div class="olist" id="ovList"></div>
+    </div>
+
+    <p class="ov-note">지역장 행은 순 안의 같은 이름과 겹치므로 집계에서 뺐습니다. 그 지역에 체크가 하나도 없는 주일은 아직 기록하지 않은 것으로 보고 ‘미기록’으로 표시하며 출석률 계산에서 제외합니다.</p>
+  </section>
+
   <div id="loading" class="skel"><div class="spin"></div>불러오는 중입니다…</div>
 </div>
 
 <div class="footbar hidden" id="bar">
   <div class="footbar-in">
     <button class="ftop" onclick="toTop()" title="맨 위로">▲</button>
-    <div class="status" id="status"><i class="sdot"></i><span id="statusTxt">체크하면 자동으로 저장됩니다</span></div>
-    <button class="btn" onclick="flush(true)">지금 저장</button>
+    <div class="status" id="status" onclick="retryNow()"><i class="sdot"></i><span id="statusTxt">체크하면 자동으로 저장됩니다</span></div>
   </div>
 </div>
 
@@ -436,9 +578,12 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   var PALETTE = ['#2E7D5B','#3A6EA5','#8D5BA6','#BF6B36','#42806B',
                  '#5F63C4','#A8506A','#2C8683','#8C6B2A','#55697C'];
 
+  var OVERVIEW_COLOR = '#2B3A55';
+
   var state = {
     regions: [], region: null, data: null, dateIndex: 0,
-    code: '', pending: {}, timer: null, sending: false, panel: null
+    code: '', pending: {}, timer: null, sending: false, panel: null,
+    mode: 'region', ov: null, ovFilter: 'all', ovSort: 'roster', adminCode: ''
   };
 
   /* ---------------- 색상 ---------------- */
@@ -472,12 +617,12 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 
   /* ---------------- 화면 ---------------- */
   function showView(id){
-    ['viewIntro','viewCode','viewSheet','loading'].forEach(function(v){
+    ['viewIntro','viewCode','viewSheet','viewOverview','loading'].forEach(function(v){
       document.getElementById(v).classList.add('hidden');
     });
     document.getElementById(id).classList.remove('hidden');
     var open = (id === 'viewSheet');
-    document.getElementById('bar').classList.toggle('hidden', !open);
+    document.getElementById('bar').classList.toggle('hidden', !(open || id === 'viewOverview'));
     document.getElementById('selDate').disabled = !open;
   }
 
@@ -532,7 +677,8 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     state.regions.forEach(function(r, i){
       var color = colorFor(r, i);
       var b = document.createElement('button');
-      b.className = 'rtile' + (state.region && state.region.id === r.id ? ' on' : '');
+      var picked = state.mode === 'region' && state.region && state.region.id === r.id;
+      b.className = 'rtile' + (picked ? ' on' : '');
       b.style.setProperty('--tile', color);
       b.style.setProperty('--tile-soft', alphaOf(color, .09));
       b.innerHTML =
@@ -540,8 +686,9 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
         '<span class="rtxt"><b>' + esc(r.title) + '</b><span>' +
         (r.leader ? esc(r.leader) : '지역장 미지정') + '</span></span>';
       b.onclick = function(){
-        if (state.region && state.region.id === r.id){ setPanel(null); return; }
+        if (picked){ setPanel(null); return; }
         if (Object.keys(state.pending).length) flush(true);
+        state.mode = 'region';
         state.region = r;
         state.code = '';
         setBrand(color);
@@ -551,6 +698,23 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       };
       box.appendChild(b);
     });
+
+    if (!state.regions.length) return;
+    var ov = document.createElement('button');
+    ov.className = 'rtile ovtile' + (state.mode === 'overview' ? ' on' : '');
+    ov.style.setProperty('--tile', OVERVIEW_COLOR);
+    ov.style.setProperty('--tile-soft', alphaOf(OVERVIEW_COLOR, .08));
+    ov.innerHTML =
+      '<span class="rbadge"><svg width="18" height="18" viewBox="0 0 18 18" fill="#fff">' +
+      '<rect x="2" y="9" width="3.2" height="7" rx="1"/><rect x="7.4" y="5" width="3.2" height="11" rx="1"/>' +
+      '<rect x="12.8" y="2" width="3.2" height="14" rx="1"/></svg></span>' +
+      '<span class="rtxt"><b>출석 현황</b><span>1~' + state.regions.length +
+      '지역 전체 · 지역별 출석률과 순원별 출석 기록</span></span>';
+    ov.onclick = function(){
+      if (state.mode === 'overview'){ setPanel(null); return; }
+      openOverview();
+    };
+    box.appendChild(ov);
   }
 
   function openRegion(){
@@ -567,14 +731,27 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   }
 
   function submitCode(){
-    state.code = document.getElementById('codeInput').value.trim();
+    var v = document.getElementById('codeInput').value.trim();
+    if (state.mode === 'overview'){ state.adminCode = v; loadOverview(); return; }
+    state.code = v;
     loadData();
+  }
+
+  function askCode(title, msg){
+    document.getElementById('codeTitle').textContent = title;
+    var m = document.getElementById('codeMsg');
+    m.textContent = msg || '';
+    m.classList.toggle('hidden', !msg);
+    document.getElementById('codeInput').value = '';
+    showView('viewCode');
+    setTimeout(function(){ document.getElementById('codeInput').focus(); }, 120);
   }
 
   function loadData(){
     showView('loading');
     google.script.run
       .withSuccessHandler(function(data){
+        if (state.mode !== 'region') return;
         state.data = data;
         state.dateIndex = data.defaultDateIndex || 0;
         if (LOCKED) setBrand(colorFor(data, 0));
@@ -604,6 +781,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   }
 
   function reload(){
+    if (state.mode === 'overview'){ loadOverview(); return; }
     if (!state.region){ location.reload(); return; }
     if (Object.keys(state.pending).length) flush(true);
     loadData();
@@ -798,8 +976,9 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     google.script.run
       .withSuccessHandler(function(res){
         state.sending = false;
+        state.retry = 0;
         setStatus('저장 완료 · ' + res.at, 'saved');
-        renderDates();
+        if (state.mode === 'region' && state.data) renderDates();
         if (Object.keys(state.pending).length) schedule();
       })
       .withFailureHandler(function(){
@@ -807,7 +986,12 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
         Object.keys(sent).forEach(function(k){
           if (!state.pending[k]) state.pending[k] = sent[k];
         });
-        setStatus('저장 실패 · [지금 저장]을 눌러 주세요', 'error');
+        // 인터넷이 잠깐 끊겨도 체크가 사라지지 않도록 3초, 6초, 12초… 간격으로 다시 보낸다
+        state.retry = (state.retry || 0) + 1;
+        var wait = Math.min(30, 3 * Math.pow(2, state.retry - 1));
+        setStatus('저장 실패 · ' + wait + '초 뒤 다시 시도 (누르면 바로)', 'error');
+        if (state.timer) clearTimeout(state.timer);
+        state.timer = setTimeout(function(){ flush(false); }, wait * 1000);
       })
       .saveAttendance({ id: state.data.id, code: state.code, items: batch });
   }
@@ -817,6 +1001,250 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       e.preventDefault(); e.returnValue = '';
     }
   });
+
+  /* ---------------- 출석 현황 ---------------- */
+  function openOverview(){
+    if (Object.keys(state.pending).length) flush(true);
+    state.mode = 'overview';
+    state.region = null;
+    state.data = null;
+    setBrand(OVERVIEW_COLOR);
+    renderRegions();
+    setPanel(null);
+    document.getElementById('selRegionVal').textContent = '출석 현황';
+    document.getElementById('selDateVal').textContent = '누적';
+    if (USE_CODE && !state.adminCode){
+      askCode('출석 현황 관리자 코드', '');
+      return;
+    }
+    loadOverview();
+  }
+
+  function loadOverview(){
+    showView('loading');
+    google.script.run
+      .withSuccessHandler(function(ov){
+        if (state.mode !== 'overview') return;
+        state.ov = ov;
+        var known = ov.regions.some(function(r){ return r.id === state.ovFilter; });
+        if (!known) state.ovFilter = 'all';
+
+        document.getElementById('mark').textContent = '현황';
+        document.getElementById('title').textContent = ov.title + ' 출석 현황';
+        document.getElementById('subtitle').textContent = '지난 주일 ' + ov.dates.length + '회 누적';
+        document.getElementById('selDateVal').textContent = '누적 ' + ov.dates.length + '주';
+
+        renderOverview();
+        showView('viewOverview');
+      })
+      .withFailureHandler(function(err){
+        if (USE_CODE && /관리자 코드/.test(err.message || '')){
+          state.adminCode = '';
+          askCode('출석 현황 관리자 코드', '관리자 코드가 올바르지 않습니다. 다시 입력해 주세요.');
+          return;
+        }
+        fail(err);
+      })
+      .getOverview(state.adminCode);
+  }
+
+  function statOf(r, m){
+    var att = 0, rec = 0;
+    for (var j = 0; j < m.marks.length; j++){
+      if (!r.recorded[j] || m.marks[j] == null) continue;
+      rec++;
+      if (m.marks[j] === 1) att++;
+    }
+    return { att: att, rec: rec, rate: rec ? att / rec : null };
+  }
+
+  function regionStat(r){
+    var att = 0, rec = 0, n = 0;
+    r.groups.forEach(function(g){
+      g.members.forEach(function(m){
+        var s = statOf(r, m);
+        att += s.att; rec += s.rec; n++;
+      });
+    });
+    return { att: att, rec: rec, n: n, rate: rec ? att / rec : null };
+  }
+
+  function pct(rate){ return rate == null ? '—' : Math.round(rate * 100) + '%'; }
+  function level(rate){ return rate == null ? 'no' : rate >= .75 ? 'hi' : rate >= .5 ? 'md' : 'lo'; }
+
+  function renderOverview(){
+    var ov = state.ov;
+    var tot = { att: 0, rec: 0, n: 0 };
+    var perDate = ov.dates.map(function(){ return 0; });
+    var anyRec = ov.dates.map(function(){ return false; });
+
+    ov.regions.forEach(function(r){
+      var s = regionStat(r);
+      tot.att += s.att; tot.rec += s.rec; tot.n += s.n;
+      r.recorded.forEach(function(v, j){ if (v) anyRec[j] = true; });
+      r.groups.forEach(function(g){
+        g.members.forEach(function(m){
+          m.marks.forEach(function(v, j){ if (v === 1) perDate[j]++; });
+        });
+      });
+    });
+
+    var recDays = anyRec.filter(Boolean).length;
+    var sumAtt = perDate.reduce(function(a, v, j){ return a + (anyRec[j] ? v : 0); }, 0);
+
+    document.getElementById('ovTitle').textContent = ov.title + ' 전체';
+    document.getElementById('ovAt').textContent = ov.at + ' 기준';
+    document.getElementById('ovStats').innerHTML =
+      '<div class="stat main"><small>평균 출석률</small><b>' + pct(tot.rec ? tot.att / tot.rec : null) + '</b></div>' +
+      '<div class="stat"><small>주일 평균</small><b>' + (recDays ? Math.round(sumAtt / recDays) : '—') + '<em>명</em></b></div>' +
+      '<div class="stat"><small>순원</small><b>' + tot.n + '<em>명</em></b></div>';
+
+    // 주일별 교구 출석 인원
+    var bars = document.getElementById('ovBars');
+    if (!ov.dates.length){
+      bars.innerHTML = '<div class="bars-empty">아직 지난 주일 기록이 없습니다</div>';
+    } else {
+      var max = Math.max.apply(null, perDate.concat([1]));
+      bars.innerHTML = ov.dates.map(function(d, j){
+        var h = anyRec[j] ? Math.max(3, Math.round(perDate[j] / max * 82)) : 3;
+        var cls = 'bar' + (anyRec[j] ? '' : ' none') + (j === ov.dates.length - 1 && anyRec[j] ? ' last' : '');
+        return '<div class="' + cls + '"><b>' + (anyRec[j] ? perDate[j] : '—') + '</b>' +
+          '<i style="height:' + h + 'px"></i><small>' + d.month + '/' + d.day + '</small></div>';
+      }).join('');
+      var wrap = document.getElementById('ovBarsWrap');
+      wrap.scrollLeft = wrap.scrollWidth;
+    }
+
+    // 지역별 출석률
+    var rl = document.getElementById('ovRegions');
+    rl.innerHTML = '';
+    ov.regions.forEach(function(r, i){
+      var s = regionStat(r);
+      var color = colorFor(r, i);
+      var b = document.createElement('button');
+      b.className = 'rrow';
+      b.style.setProperty('--tile', color);
+      b.innerHTML =
+        '<span class="rbadge">' + esc(regionNo(r, i)) + '</span>' +
+        '<span class="rr-main"><span class="rr-top"><b>' + esc(r.title) + '</b><span>' +
+        (r.leader ? esc(r.leader) + ' · ' : '') + s.n + '명</span></span>' +
+        '<span class="rr-bar"><i style="width:' + (s.rate == null ? 0 : Math.round(s.rate * 100)) + '%"></i></span></span>' +
+        '<span class="rr-pct">' + pct(s.rate) + '</span>';
+      b.onclick = function(){
+        state.ovFilter = r.id;
+        renderOvChips();
+        renderOvList();
+        document.getElementById('ovMembers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      rl.appendChild(b);
+    });
+
+    renderOvChips();
+    setOvSort(state.ovSort);
+    if (!Object.keys(state.pending).length && !state.sending){
+      setStatus('누적 ' + ov.dates.length + '주 · 순원 ' + tot.n + '명 · ' + ov.at + ' 기준');
+    }
+  }
+
+  function renderOvChips(){
+    var box = document.getElementById('ovChips');
+    box.innerHTML = '';
+    function chip(id, label, color){
+      var b = document.createElement('button');
+      b.className = 'fchip' + (state.ovFilter === id ? ' on' : '');
+      if (color){
+        b.style.setProperty('--tile', color);
+        b.innerHTML = '<i></i>' + esc(label);
+      } else {
+        b.textContent = label;
+      }
+      b.onclick = function(){
+        state.ovFilter = id;
+        renderOvChips();
+        renderOvList();
+      };
+      box.appendChild(b);
+    }
+    chip('all', '전체');
+    state.ov.regions.forEach(function(r, i){ chip(r.id, regionNo(r, i) + '지역', colorFor(r, i)); });
+
+    var on = box.querySelector('.fchip.on');
+    if (on) box.scrollLeft = Math.max(0, on.offsetLeft - 14);
+  }
+
+  function setOvSort(v){
+    state.ovSort = v;
+    document.getElementById('segRoster').classList.toggle('on', v === 'roster');
+    document.getElementById('segLow').classList.toggle('on', v === 'low');
+    renderOvList();
+  }
+
+  function ovRow(r, ri, g, m, s, withWhere){
+    var dates = state.ov.dates;
+    var dots = m.marks.map(function(v, j){
+      var cls = (!r.recorded[j] || v == null) ? 'na' : (v === 1 ? 'on' : '');
+      return '<i class="dot ' + cls + '" title="' + esc(dates[j].label) + '"></i>';
+    }).join('');
+    var where = withWhere ? regionNo(r, ri) + '지역 · ' + g.name : '';
+    return '<div class="orow"><div class="omain"><div class="oname">' + esc(m.name) +
+      (m.lead ? '<span class="tag">순장</span>' : '') +
+      (where ? '<span class="ometa">' + esc(where) + '</span>' : '') + '</div>' +
+      (dates.length ? '<div class="dots">' + dots + '</div>' : '') + '</div>' +
+      '<div class="orate ' + level(s.rate) + '"><b>' + pct(s.rate) + '</b><small>' +
+      s.att + '/' + s.rec + '회</small></div></div>';
+  }
+
+  function renderOvList(){
+    var ov = state.ov;
+    var html = [];
+    var count = 0;
+    var picked = [];
+    ov.regions.forEach(function(r, ri){
+      if (state.ovFilter === 'all' || r.id === state.ovFilter) picked.push({ r: r, ri: ri });
+    });
+
+    if (state.ovSort === 'low'){
+      var rows = [];
+      picked.forEach(function(p){
+        p.r.groups.forEach(function(g){
+          g.members.forEach(function(m){ rows.push({ p: p, g: g, m: m, s: statOf(p.r, m) }); });
+        });
+      });
+      rows.sort(function(a, b){
+        var ar = a.s.rate == null ? 2 : a.s.rate;
+        var br = b.s.rate == null ? 2 : b.s.rate;
+        if (ar !== br) return ar - br;
+        if (a.s.rec !== b.s.rec) return b.s.rec - a.s.rec;
+        return a.m.name.localeCompare(b.m.name, 'ko');
+      });
+      rows.forEach(function(x){ html.push(ovRow(x.p.r, x.p.ri, x.g, x.m, x.s, true)); });
+      count = rows.length;
+    } else {
+      picked.forEach(function(p){
+        if (state.ovFilter === 'all'){
+          var rs = regionStat(p.r);
+          html.push('<div class="o-region"><span class="rbadge" style="--tile:' + colorFor(p.r, p.ri) + '">' +
+            esc(regionNo(p.r, p.ri)) + '</span>' + esc(p.r.title) +
+            '<span>' + (p.r.leader ? '지역장 ' + esc(p.r.leader) + ' · ' : '') + pct(rs.rate) + '</span></div>');
+        }
+        p.r.groups.forEach(function(g){
+          html.push('<div class="o-group">' + esc(g.name) + '<em>' + g.members.length + '명</em></div>');
+          g.members.forEach(function(m){
+            html.push(ovRow(p.r, p.ri, g, m, statOf(p.r, m), false));
+            count++;
+          });
+        });
+      });
+    }
+
+    document.getElementById('ovCount').textContent = count + '명';
+    document.getElementById('ovList').innerHTML =
+      html.join('') || '<div class="skel">표시할 순원이 없습니다</div>';
+  }
+
+  function retryNow(){
+    if (Object.keys(state.pending).length) flush(true);
+  }
 
   /* ---------------- 보조 ---------------- */
   function toTop(){

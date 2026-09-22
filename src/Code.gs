@@ -62,8 +62,13 @@ function setAccessCodes() {
     '3교구_7지역': '1007', '3교구_8지역': '1008', '3교구_9지역': '1009',
     '3교구_10지역': '1010'
   };
-  PropertiesService.getScriptProperties().setProperty('ACCESS_CODES', JSON.stringify(codes));
-  Logger.log('접속코드 %s개를 저장했습니다.', Object.keys(codes).length);
+  // 전 지역 '출석 현황' 화면을 여는 관리자 코드
+  const adminCode = '9999';
+
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty('ACCESS_CODES', JSON.stringify(codes));
+  props.setProperty('ADMIN_CODE', adminCode);
+  Logger.log('접속코드 %s개와 관리자 코드를 저장했습니다.', Object.keys(codes).length);
 }
 
 /* ------------------------------ 웹앱 진입점 ------------------------------ */
@@ -379,6 +384,115 @@ function writeLog_(layout, byCol) {
   } catch (err) {
     // 기록 실패가 출석 저장을 막지 않도록 조용히 넘어감
   }
+}
+
+/* ------------------------------ 출석 현황 ------------------------------ */
+
+/**
+ * 시트의 월·일에 연도를 붙여 yyyymmdd 숫자로 만든다.
+ * 9월~이듬해 2월처럼 해를 넘기는 출석부도 순서가 유지되도록 월이 줄어들면 해를 올린다.
+ * 첫 달이 오늘보다 넉 달 넘게 뒤라면 작년에 시작한 출석부로 본다(예: 1월에 9월 시작 출석부).
+ */
+function dateKeys_(dates, today) {
+  if (!dates.length) return [];
+  const first = dates[0].month;
+  let year = today.getFullYear();
+  if (first > today.getMonth() + 1 + 4) year -= 1;
+  let prev = first;
+  return dates.map(function (d) {
+    if (d.month < prev) year += 1;
+    prev = d.month;
+    return year * 10000 + d.month * 100 + d.day;
+  });
+}
+
+function checkAdmin_(code) {
+  if (!CONFIG.USE_ACCESS_CODE) return;
+  const expect = prop_('ADMIN_CODE');
+  if (!expect || String(code == null ? '' : code).trim() !== String(expect)) {
+    throw new Error('관리자 코드가 올바르지 않습니다.');
+  }
+}
+
+/**
+ * 웹앱에서 호출: 모든 지역의 지난 주일 출결을 모아 돌려준다.
+ * 지역장 행은 순 안의 이름과 겹치므로 빼고, 오늘 이후 날짜는 넣지 않는다.
+ * marks 는 1(출석) / 0(결석) / null(그 지역 시트에 없는 날짜)이다.
+ */
+function getOverview(code) {
+  checkAdmin_(code);
+
+  const now = new Date();
+  const tz = ss_().getSpreadsheetTimeZone();
+  const todayKey = Number(Utilities.formatDate(now, tz, 'yyyyMMdd'));
+
+  const master = {};
+  const parsed = [];
+
+  getRegions().forEach(function (r) {
+    let d;
+    try {
+      d = parseSheet_(sheetByRegionId_(r.id));
+    } catch (err) {
+      return;
+    }
+    const keys = dateKeys_(d.dates, now);
+    keys.forEach(function (k, i) {
+      if (!master[k]) {
+        master[k] = { month: d.dates[i].month, day: d.dates[i].day, label: d.dates[i].label };
+      }
+    });
+    parsed.push({ d: d, keys: keys });
+  });
+
+  const past = Object.keys(master).map(Number)
+    .filter(function (k) { return k <= todayKey; })
+    .sort(function (a, b) { return a - b; });
+
+  const regions = parsed.map(function (p) {
+    const at = {};
+    p.keys.forEach(function (k, i) { at[k] = i; });
+
+    const groups = p.d.groups
+      .filter(function (g) { return g.name !== '지역장'; })
+      .map(function (g) {
+        return {
+          name: g.name,
+          members: g.members.map(function (m) {
+            return {
+              name: m.name,
+              lead: !!m.lead,
+              marks: past.map(function (k) {
+                return at[k] == null ? null : (m.marks[at[k]] ? 1 : 0);
+              })
+            };
+          })
+        };
+      });
+
+    // 그 지역에서 한 명이라도 체크한 주일만 '기록된 주일'로 본다
+    const recorded = past.map(function (k, j) {
+      return groups.some(function (g) {
+        return g.members.some(function (m) { return m.marks[j] === 1; });
+      });
+    });
+
+    return {
+      id: p.d.id,
+      title: p.d.title,
+      leader: p.d.leader,
+      recorded: recorded,
+      groups: groups
+    };
+  });
+
+  const firstTitle = regions.length ? regions[0].title : '';
+  return {
+    title: firstTitle.indexOf('_') > 0 ? firstTitle.split('_')[0] : CONFIG.APP_TITLE,
+    dates: past.map(function (k) { return master[k]; }),
+    regions: regions,
+    at: Utilities.formatDate(now, tz, 'M월 d일 HH:mm')
+  };
 }
 
 /* ------------------------------ 배부용 도구 ------------------------------ */
