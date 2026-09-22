@@ -10,6 +10,7 @@
 <style>
 /* ========================= 토큰 ========================= */
 :root{
+  color-scheme: light;   /* 휴대폰이 다크 모드여도 항상 흰 화면 */
   --brand:#2E7D5B;
   --brand-dark:#22614a;
   --brand-soft:rgba(46,125,91,.10);
@@ -33,15 +34,6 @@
   --r-xl:24px; --r-lg:18px; --r-md:14px; --r-sm:10px;
   --sh-1:0 1px 2px rgba(28,26,23,.04), 0 3px 12px rgba(28,26,23,.05);
   --sh-2:0 2px 8px rgba(28,26,23,.07), 0 18px 40px rgba(28,26,23,.13);
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --paper:#141618; --card:#1e2225; --card-2:#191d20;
-    --line:#31383d; --line-2:#272d31;
-    --ink:#f1ede6; --ink-2:#c7c1b7; --muted:#938e87;
-    --chk:#4c545a;
-    --rose-soft:#2c1d19;
-  }
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -327,9 +319,6 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   --mid:#A87B22;  --mid-soft:rgba(176,132,45,.15);
   --low:#B04936;  --low-soft:rgba(176,73,54,.12);
   --dot-off:#e6dfd4;
-}
-@media (prefers-color-scheme: dark){
-  :root{ --good:#5cb58a; --mid:#d4a14a; --low:#e07a64; --dot-off:#353c41; }
 }
 
 .ovtile{grid-column:1 / -1;}
