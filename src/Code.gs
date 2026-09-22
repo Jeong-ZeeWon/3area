@@ -2,9 +2,10 @@
  * 성민교회 3교구 지역별 출석 체크 웹앱
  * 파일: Code.gs
  *
- * - 지역별 시트 구조(1행 월 병합 / 2행 구분·순원·연락처·날짜 / 3행 지역장)를
- *   자동으로 인식하므로 탭 이름이나 월이 추가되어도 코드 수정이 필요 없습니다.
- * - 앱에서 체크하면 해당 지역 시트의 해당 날짜 칸에 바로 기록됩니다.
+ * - 지역별 시트 구조를 매번 읽어 들이므로 탭 이름·월·명단이 바뀌어도 코드 수정이 필요 없습니다.
+ *     1행 월(병합) / 2행 주일출석·순모임출석 / 3행 구분·순원·연락처·날짜 / 4행부터 명단
+ *   순모임 소제목 줄이 없는 옛 모양(1행 월 / 2행 날짜)도 그대로 읽습니다.
+ * - 앱에서 체크하면 해당 지역 시트의 해당 날짜 칸(주일 또는 순모임)에 바로 기록됩니다.
  *******************************************************************/
 
 const CONFIG = {
@@ -203,28 +204,102 @@ function parseSheet_(sheet) {
     throw new Error('머리글(구분·순원) 행을 찾을 수 없습니다: ' + sheet.getName());
   }
 
-  const monthRow = headerRow >= 2 ? values[headerRow - 2] : [];
   const dateRow = values[headerRow - 1];
 
-  // 병합된 월 표시는 첫 칸에만 값이 있으므로 오른쪽으로 이어서 채운다
-  const dates = [];
-  let curMonth = 0;
-  for (let c = CONFIG.FIRST_DATE_COL - 1; c < lastCol; c++) {
-    const m = parseMonth_(monthRow[c]);
-    if (m) curMonth = m;
-    const cell = dateRow[c];
-    const day = parseDay_(cell);
-    if (!day) continue;
-    const month = cell instanceof Date ? cell.getMonth() + 1 : curMonth;
-    if (!month) continue;
-    dates.push({ col: c + 1, month: month, day: day, label: month + '월 ' + day + '일' });
+  // 월 줄: 날짜 줄 위쪽에서 'N월'이 적힌 가장 가까운 줄
+  let monthRow = [];
+  let monthIdx = -1;
+  for (let i = headerRow - 2; i >= 0; i--) {
+    if (hasLabel_(values[i], lastCol, /\d{1,2}\s*월/)) { monthRow = values[i]; monthIdx = i; break; }
   }
+
+  // 소제목 줄(주일출석 | 순모임출석): 날짜 줄 위쪽, 없으면 바로 아랫줄
+  let subRow = null;
+  let subBelow = false;
+  for (let i = headerRow - 2; i >= 0; i--) {
+    if (i !== monthIdx && hasLabel_(values[i], lastCol, /순모임|예배|주일/)) { subRow = values[i]; break; }
+  }
+  if (!subRow && findSubRow_(values[headerRow], lastCol)) {
+    subRow = values[headerRow];
+    subBelow = true;
+  }
+
+  // 날짜 칸을 주일 칸과 순모임 칸으로 나눈다.
+  // 병합된 월 표시는 첫 칸에만 값이 있으므로 오른쪽으로 이어서 적용한다.
+  const wList = [];
+  const gList = [];
+  const warnings = [];
+  let month = 0;
+  let inGroup = false;
+  let lastDay = 0;
+  let prev = null;
+  for (let c = CONFIG.FIRST_DATE_COL - 1; c < lastCol; c++) {
+    const head = String(monthRow[c] == null ? '' : monthRow[c]).trim();
+    if (head) {
+      inGroup = isGroupText_(head);
+      month = parseMonth_(head) || (inGroup ? 0 : month);
+    }
+    const cell = dateRow[c];
+    const sub = subRow ? String(subRow[c] == null ? '' : subRow[c]).trim() : '';
+    let day = parseDay_(cell);
+    let guessed = false;
+    if (!day && subRow) {
+      if (/^\d{1,2}$/.test(sub)) {        // 날짜가 소제목 줄에 잘못 들어간 경우
+        day = Number(sub);
+        guessed = true;
+      } else if (sub && lastDay) {        // 날짜 한 칸이 (주일|순모임) 두 칸 위로 병합된 경우
+        day = lastDay;
+      }
+    }
+    if (!day) { prev = null; continue; }
+    lastDay = day;
+
+    const m = cell instanceof Date ? cell.getMonth() + 1 : month;
+    let isGroup = inGroup || isGroupText_(cell) || isGroupText_(sub);
+    // 소제목이 비었거나 잘못 적힌 칸은 바로 앞 주일 칸의 짝(순모임)으로 본다
+    if (!isGroup && subRow && !/주일|예배/.test(sub) &&
+        prev && !prev.isGroup && prev.day === day && prev.month === m) {
+      isGroup = true;
+      guessed = true;
+    }
+    const item = { col: c + 1, month: m, day: day, isGroup: isGroup };
+    if (guessed) {
+      warnings.push(colLetter_(c + 1) + '열(' + m + '월 ' + day + '일 ' + (isGroup ? '순모임' : '주일') +
+        ')의 머리글이 비었거나 다른 줄에 적혀 있어 짐작해서 읽었습니다');
+    }
+    (isGroup ? gList : wList).push(item);
+    prev = item;
+  }
+
+  const dates = [];
+  const byLabel = {};
+  wList.forEach(function (x) {
+    if (!x.month) return;
+    const label = x.month + '월 ' + x.day + '일';
+    if (byLabel[label]) return;
+    const d = { col: x.col, gcol: null, month: x.month, day: x.day, label: label };
+    byLabel[label] = d;
+    dates.push(d);
+  });
   if (!dates.length) throw new Error('날짜 열을 찾을 수 없습니다: ' + sheet.getName());
+
+  // 순모임 칸은 같은 날짜의 주일 칸과 짝을 짓는다. 월 표시가 없으면 순서대로 맞춘다.
+  gList.forEach(function (x, k) {
+    let d = x.month ? byLabel[x.month + '월 ' + x.day + '일'] : null;
+    if (!d && !x.month && dates[k] && dates[k].day === x.day) d = dates[k];
+    if (d && !d.gcol) d.gcol = x.col;
+  });
+  const hasGroup = dates.some(function (d) { return !!d.gcol; });
+
+  const filled = function (r, col) {
+    if (!col) return false;
+    return String(values[r][col - 1] == null ? '' : values[r][col - 1]).trim() !== '';
+  };
 
   // 명단: A열 값이 나오면 새 그룹, B열 이름이 있으면 순원
   const groups = [];
   let cur = null;
-  for (let r = headerRow; r < lastRow; r++) {
+  for (let r = headerRow + (subBelow ? 1 : 0); r < lastRow; r++) {
     const row = r + 1;
     const gname = String(values[r][0] == null ? '' : values[r][0]).trim();
     const name = String(values[r][1] == null ? '' : values[r][1]).trim();
@@ -243,9 +318,8 @@ function parseSheet_(sheet) {
       name: name,
       phone: String(values[r][2] == null ? '' : values[r][2]).trim(),
       lead: (w === 'bold' || w === '700' || w === 'bolder'),
-      marks: dates.map(function (d) {
-        return String(values[r][d.col - 1] == null ? '' : values[r][d.col - 1]).trim() !== '';
-      })
+      marks: dates.map(function (d) { return filled(r, d.col); }),
+      gmarks: dates.map(function (d) { return filled(r, d.gcol); })
     });
   }
 
@@ -261,8 +335,45 @@ function parseSheet_(sheet) {
     leader: leader,
     headerRow: headerRow,
     dates: dates,
+    hasGroup: hasGroup,
+    warnings: warnings,
     groups: groups.filter(function (g) { return g.members.length; })
   };
+}
+
+function isGroupText_(v) {
+  return /순모임/.test(String(v == null ? '' : v));
+}
+
+function hasLabel_(row, lastCol, re) {
+  if (!row) return false;
+  for (let c = CONFIG.FIRST_DATE_COL - 1; c < lastCol; c++) {
+    if (re.test(String(row[c] == null ? '' : row[c]))) return true;
+  }
+  return false;
+}
+
+function colLetter_(n) {
+  let s = '';
+  while (n > 0) {
+    const r = (n - 1) % 26;
+    s = String.fromCharCode(65 + r) + s;
+    n = Math.floor((n - 1) / 26);
+  }
+  return s;
+}
+
+/**
+ * 머리글 바로 아랫줄이 (예배 | 순모임) 같은 소제목 줄인지 본다.
+ * A·B열이 비어 있고 날짜 칸 어딘가에 '순모임'·'예배'·'주일'이 적혀 있으면 소제목 줄이다.
+ */
+function findSubRow_(row, lastCol) {
+  if (!row) return null;
+  if (String(row[0] == null ? '' : row[0]).trim() || String(row[1] == null ? '' : row[1]).trim()) return null;
+  for (let c = CONFIG.FIRST_DATE_COL - 1; c < lastCol; c++) {
+    if (/순모임|예배|주일/.test(String(row[c] == null ? '' : row[c]))) return row;
+  }
+  return null;
 }
 
 function defaultDateIndex_(dates) {
@@ -319,7 +430,10 @@ function saveAttendance(payload) {
       g.members.forEach(function (m) { validRow[m.row] = true; });
     });
     const validCol = {};
-    layout.dates.forEach(function (d) { validCol[d.col] = true; });
+    layout.dates.forEach(function (d) {
+      if (d.col) validCol[d.col] = true;
+      if (d.gcol) validCol[d.gcol] = true;
+    });
 
     const byCol = {};
     (payload.items || []).forEach(function (it) {
@@ -370,7 +484,10 @@ function writeLog_(layout, byCol) {
     try { email = Session.getActiveUser().getEmail() || ''; } catch (err) { email = ''; }
 
     const colLabel = {};
-    layout.dates.forEach(function (d) { colLabel[d.col] = d.label; });
+    layout.dates.forEach(function (d) {
+      if (d.col) colLabel[d.col] = d.label + ' 예배';
+      if (d.gcol) colLabel[d.gcol] = d.label + ' 순모임';
+    });
 
     Object.keys(byCol).forEach(function (key) {
       log.appendRow([
@@ -464,24 +581,30 @@ function getOverview(code) {
               lead: !!m.lead,
               marks: past.map(function (k) {
                 return at[k] == null ? null : (m.marks[at[k]] ? 1 : 0);
+              }),
+              gmarks: past.map(function (k) {
+                if (at[k] == null || !p.d.dates[at[k]].gcol) return null;
+                return m.gmarks[at[k]] ? 1 : 0;
               })
             };
           })
         };
       });
 
-    // 그 지역에서 한 명이라도 체크한 주일만 '기록된 주일'로 본다
-    const recorded = past.map(function (k, j) {
+    // 그 지역에서 한 명이라도 체크한 주만 '기록된 주'로 본다(예배·순모임 따로)
+    const anyOn = function (key, j) {
       return groups.some(function (g) {
-        return g.members.some(function (m) { return m.marks[j] === 1; });
+        return g.members.some(function (m) { return m[key][j] === 1; });
       });
-    });
+    };
 
     return {
       id: p.d.id,
       title: p.d.title,
       leader: p.d.leader,
-      recorded: recorded,
+      hasGroup: p.d.hasGroup,
+      recorded: past.map(function (k, j) { return anyOn('marks', j); }),
+      grecorded: past.map(function (k, j) { return anyOn('gmarks', j); }),
       groups: groups
     };
   });
@@ -563,7 +686,11 @@ function checkStructure() {
       lines.push(d.title + ' — 지역장 ' + (d.leader || '미지정') +
         ' / 순 ' + d.groups.length + '개 / 인원 ' + total + '명 / 날짜 ' +
         d.dates.length + '개 (' + d.dates[0].label + ' ~ ' + d.dates[d.dates.length - 1].label + ')' +
-        '\n    순장(굵은 글씨): ' + (leads.length ? leads.join(', ') : '없음'));
+        '\n    순모임 칸: ' + (d.hasGroup
+          ? d.dates.filter(function (x) { return x.gcol; }).length + '주 인식'
+          : '없음 (날짜 위 줄에 주일출석·순모임출석을 적어 날짜마다 두 칸으로 나누세요)') +
+        '\n    순장(굵은 글씨): ' + (leads.length ? leads.join(', ') : '없음') +
+        (d.warnings.length ? '\n    ⚠ ' + d.warnings.join('\n    ⚠ ') : ''));
     } catch (err) {
       lines.push(r.title + ' — 오류: ' + err.message);
     }

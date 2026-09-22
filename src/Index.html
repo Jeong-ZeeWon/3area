@@ -185,21 +185,21 @@ button{font-family:inherit; color:inherit;}
   background:var(--card); border:1px solid var(--line); border-radius:var(--r-xl);
   box-shadow:var(--sh-1); margin-bottom:14px; overflow:hidden;
 }
-.sum{display:flex; align-items:center; gap:17px; padding:17px 18px 15px;}
+.sum-cap{padding:15px 18px 0; font-size:12.5px; color:var(--muted); font-weight:500;}
+.sum2{display:grid; grid-template-columns:1fr 1fr; gap:9px; padding:10px 14px 14px;}
+.sumcol{
+  display:flex; align-items:center; gap:10px; min-width:0;
+  background:var(--card-2); border:1px solid var(--line-2); border-radius:var(--r-md); padding:10px;
+}
+.sumcol.off{opacity:.4;}
 .ring{position:relative; flex:0 0 auto; width:88px; height:88px;}
+.ring.sm{width:60px; height:60px;}
 .ring-txt{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1;}
-.ring-txt b{font-size:22px; font-weight:700; color:var(--brand);}
-.ring-txt small{font-size:10px; color:var(--muted); margin-top:3px;}
-.sside{flex:1; min-width:0;}
-.sside .cap{font-size:12px; color:var(--muted); font-weight:500;}
-.sside .big{font-size:25px; font-weight:700; letter-spacing:-.035em; margin:1px 0 9px;}
-.sside .big em{font-style:normal; font-size:14.5px; font-weight:500; color:var(--muted); margin-left:4px;}
-.meter{height:8px; border-radius:99px; background:var(--line-2); overflow:hidden;}
-.meter i{display:block; height:100%; border-radius:99px; background:var(--brand); transition:width .4s cubic-bezier(.4,0,.2,1);}
-.legend{display:flex; gap:13px; margin-top:8px; font-size:12px; color:var(--muted);}
-.legend span{display:inline-flex; align-items:center; gap:5px;}
-.legend i{width:7px; height:7px; border-radius:50%;}
-.legend .p{background:var(--brand);} .legend .a{background:var(--line);}
+.ring-txt b{font-size:15.5px; font-weight:700; color:var(--brand); letter-spacing:-.03em;}
+.stxt{min-width:0;}
+.stxt small{display:block; font-size:11.5px; color:var(--ink-2); font-weight:700;}
+.stxt b{display:block; font-size:20px; font-weight:700; letter-spacing:-.035em; line-height:1.25; white-space:nowrap;}
+.stxt b em{font-style:normal; font-size:11.5px; color:var(--muted); font-weight:500; margin-left:1px;}
 
 .quick{display:flex; gap:7px; padding:0 14px 14px;}
 .qbtn{
@@ -210,58 +210,68 @@ button{font-family:inherit; color:inherit;}
 .qbtn:active{background:var(--brand-soft); border-color:var(--brand-line);}
 
 /* 순 카드 */
+:root{ --ckw:54px; --ckw-g:60px; }
 .group{
   background:var(--card); border:1px solid var(--line); border-radius:var(--r-xl);
   box-shadow:var(--sh-1); margin-bottom:13px; overflow:hidden;
 }
-.ghead{display:flex; align-items:center; gap:9px; padding:13px 15px 12px; background:var(--card-2); border-bottom:1px solid var(--line-2);}
+.ghead{display:flex; align-items:baseline; gap:9px; padding:13px 15px 4px; background:var(--card-2);}
 .gname{font-size:15px; font-weight:700; letter-spacing:-.025em;}
-.gpill{font-size:11.5px; font-weight:700; color:var(--brand); background:var(--brand-soft); padding:3px 9px; border-radius:99px;}
+.gsub{margin-left:auto; font-size:12px; color:var(--muted); font-weight:500; white-space:nowrap;}
+.gsub b{color:var(--brand); font-weight:700;}
+/* 두 체크 칸 바로 위에 같은 너비의 '전체' 버튼을 둔다 */
+.gcols{display:flex; align-items:center; gap:8px; padding:6px 15px 9px; background:var(--card-2); border-bottom:1px solid var(--line-2);}
+.gcols > span{flex:1; font-size:11.5px; color:var(--muted);}
 .gall{
-  margin-left:auto; background:transparent; border:1px solid var(--line);
-  border-radius:99px; padding:6px 13px; font-size:12px; font-weight:500;
-  color:var(--ink-2); cursor:pointer;
+  flex:0 0 auto; width:var(--ckw); background:var(--card); border:1px solid var(--line);
+  border-radius:9px; padding:5px 0; font-size:11px; font-weight:700; color:var(--ink-2); cursor:pointer;
 }
+.gall.g{width:var(--ckw-g);}
 .gall:active{background:var(--brand-soft); border-color:var(--brand-line);}
-.gbar{height:3px; background:var(--line-2);}
-.gbar i{display:block; height:100%; background:var(--brand); transition:width .35s;}
 
 .list{list-style:none; margin:0; padding:0;}
 .list li + li{border-top:1px solid var(--line-2);}
 .row{
-  position:relative; display:flex; align-items:center; gap:12px;
-  padding:11px 15px; cursor:pointer; user-select:none; transition:background .16s;
+  position:relative; display:flex; align-items:center; gap:11px;
+  padding:10px 15px; user-select:none; transition:background .16s;
 }
 .row::before{content:''; position:absolute; left:0; top:0; bottom:0; width:0; background:var(--brand); transition:width .18s;}
-.row:active{background:var(--card-2);}
-.row.on{background:var(--brand-soft);}
-.row.on::before{width:4px;}
+.row.w{background:var(--brand-soft);}
+.row.w::before{width:4px;}
 .ava{
-  flex:0 0 auto; width:40px; height:40px; border-radius:50%;
+  flex:0 0 auto; width:38px; height:38px; border-radius:50%;
   background:var(--card-2); border:1px solid var(--line);
   display:flex; align-items:center; justify-content:center;
-  font-size:15.5px; font-weight:700; color:var(--ink-2);
+  font-size:15px; font-weight:700; color:var(--ink-2);
   transition:background .18s, color .18s, border-color .18s;
 }
-.row.on .ava{background:var(--brand); border-color:var(--brand); color:#fff;}
+.row.w .ava{background:var(--brand); border-color:var(--brand); color:#fff;}
 .who{flex:1; min-width:0;}
-.who .nm{display:block; font-size:16px; font-weight:500; letter-spacing:-.025em;}
-.row.on .who .nm{font-weight:700;}
+.who .nm{display:block; font-size:16px; font-weight:500; letter-spacing:-.025em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.row.w .who .nm{font-weight:700;}
 .tag{
-  display:inline-block; margin-left:6px; vertical-align:2px;
+  display:inline-block; margin-left:5px; vertical-align:2px;
   font-size:10.5px; font-weight:700; letter-spacing:-.01em;
   color:var(--brand); border:1px solid var(--brand-line);
   background:var(--card); padding:1px 6px 2px; border-radius:99px;
 }
 .who .ph{display:inline-block; font-size:12px; color:var(--muted); text-decoration:none;}
 .who .ph:active{color:var(--brand);}
-.chk{
-  flex:0 0 auto; width:28px; height:28px; border-radius:50%;
-  border:2px solid var(--chk); background:var(--card);
-  display:flex; align-items:center; justify-content:center;
-  font-size:15px; color:transparent; transition:all .18s;
+
+.cks{flex:0 0 auto; display:flex; gap:8px;}
+.ck{
+  width:var(--ckw); height:46px; border-radius:12px; cursor:pointer;
+  border:1.5px solid var(--chk); background:var(--card); color:var(--muted);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  font-size:11.5px; font-weight:700; line-height:1.1; letter-spacing:-.02em;
+  transition:background .16s, border-color .16s, color .16s, transform .1s;
 }
-.row.on .chk{background:var(--brand); border-color:var(--brand); color:#fff; box-shadow:0 2px 8px var(--brand-ring);}
+.ck.g{width:var(--ckw-g);}
+.ck i{font-style:normal; font-size:15px; line-height:1; color:var(--chk);}
+.ck:active{transform:scale(.94);}
+.ck.on{background:var(--brand); border-color:var(--brand); color:#fff; box-shadow:0 2px 8px var(--brand-ring);}
+.ck.on i{color:#fff;}
+.ck[disabled]{opacity:.3; cursor:default; box-shadow:none;}
 
 /* 하단 */
 .footbar{
@@ -386,6 +396,8 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; transition:background .15s, color .15s;
 }
 .seg button.on{background:var(--brand); color:#fff; font-weight:700; box-shadow:0 2px 8px var(--brand-ring);}
+.ov-metric{margin-bottom:14px; background:var(--card); border-color:var(--line); box-shadow:var(--sh-1); padding:4px; border-radius:14px;}
+.ov-metric button{padding:11px 6px; font-size:14px;}
 .ov-legend{display:flex; gap:13px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); padding:11px 2px 0;}
 .ov-legend span{display:inline-flex; align-items:center; gap:5px;}
 
@@ -463,7 +475,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 
   <div class="panel" id="panelDate">
     <div class="panel-in">
-      <p class="panel-title">주일 선택</p>
+      <p class="panel-title" id="datePanelTitle">주일 선택</p>
       <div id="dateList"></div>
     </div>
   </div>
@@ -495,30 +507,38 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 
   <section id="viewSheet" class="hidden">
     <div class="sumcard">
-      <div class="sum">
-        <div class="ring">
-          <svg width="88" height="88" viewBox="0 0 88 88" style="transform:rotate(-90deg)">
-            <circle cx="44" cy="44" r="37" fill="none" stroke="var(--line-2)" stroke-width="9"></circle>
-            <circle id="ringArc" cx="44" cy="44" r="37" fill="none" stroke="var(--brand)"
-                    stroke-width="9" stroke-linecap="round"
-                    stroke-dasharray="232.5" stroke-dashoffset="232.5"
-                    style="transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)"></circle>
-          </svg>
-          <div class="ring-txt"><b id="pctTxt">0%</b><small>출석률</small></div>
-        </div>
-        <div class="sside">
-          <div class="cap" id="sumCap">—</div>
-          <div class="big"><span id="cntPresent">0</span><em>/ <span id="cntTotal">0</span>명</em></div>
-          <div class="meter"><i id="meterBar" style="width:0%"></i></div>
-          <div class="legend">
-            <span><i class="p"></i>출석 <b id="lgP">0</b></span>
-            <span><i class="a"></i>미출석 <b id="lgA">0</b></span>
+      <div class="sum-cap" id="sumCap">—</div>
+      <div class="sum2">
+        <div class="sumcol">
+          <div class="ring sm">
+            <svg width="60" height="60" viewBox="0 0 60 60" style="transform:rotate(-90deg)">
+              <circle cx="30" cy="30" r="24.5" fill="none" stroke="var(--line-2)" stroke-width="6.5"></circle>
+              <circle id="ringW" cx="30" cy="30" r="24.5" fill="none" stroke="var(--brand)"
+                      stroke-width="6.5" stroke-linecap="round"
+                      stroke-dasharray="153.9" stroke-dashoffset="153.9"
+                      style="transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)"></circle>
+            </svg>
+            <div class="ring-txt"><b id="pctW">0%</b></div>
           </div>
+          <div class="stxt"><small>주일예배</small><b><span id="cntW">0</span><em>/<span class="cntT">0</span>명</em></b></div>
+        </div>
+        <div class="sumcol" id="sumG">
+          <div class="ring sm">
+            <svg width="60" height="60" viewBox="0 0 60 60" style="transform:rotate(-90deg)">
+              <circle cx="30" cy="30" r="24.5" fill="none" stroke="var(--line-2)" stroke-width="6.5"></circle>
+              <circle id="ringG" cx="30" cy="30" r="24.5" fill="none" stroke="var(--brand)"
+                      stroke-width="6.5" stroke-linecap="round"
+                      stroke-dasharray="153.9" stroke-dashoffset="153.9"
+                      style="transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)"></circle>
+            </svg>
+            <div class="ring-txt"><b id="pctG">0%</b></div>
+          </div>
+          <div class="stxt"><small>순모임</small><b><span id="cntG">0</span><em>/<span class="cntT">0</span>명</em></b></div>
         </div>
       </div>
       <div class="quick">
-        <button class="qbtn" onclick="markAll(true)">전체 출석</button>
-        <button class="qbtn" onclick="markAll(false)">전체 해제</button>
+        <button class="qbtn" onclick="markAll('w')">예배 전체</button>
+        <button class="qbtn" id="qbtnG" onclick="markAll('g')">순모임 전체</button>
         <button class="qbtn" onclick="copyAbsent()">미출석 복사</button>
       </div>
     </div>
@@ -528,6 +548,11 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   </section>
 
   <section id="viewOverview" class="hidden">
+    <div class="seg ov-metric" id="ovMetric">
+      <button id="metW" class="on" onclick="setOvMetric('w')">주일예배 출석</button>
+      <button id="metG" onclick="setOvMetric('g')">순모임 출석</button>
+    </div>
+
     <div class="ov-card">
       <div class="ov-head"><h2 id="ovTitle">교구 전체</h2><span id="ovAt"></span></div>
       <div class="stats" id="ovStats"></div>
@@ -551,7 +576,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
           <span><i class="dot on"></i>출석</span>
           <span><i class="dot"></i>결석</span>
           <span><i class="dot na"></i>미기록</span>
-          <span>칸 하나가 주일 하루, 오른쪽이 최근</span>
+          <span id="ovLegendTip">칸 하나가 주일 하루, 오른쪽이 최근</span>
         </div>
       </div>
       <div class="olist" id="ovList"></div>
@@ -583,7 +608,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   var state = {
     regions: [], region: null, data: null, dateIndex: 0,
     code: '', pending: {}, timer: null, sending: false, panel: null,
-    mode: 'region', ov: null, ovFilter: 'all', ovSort: 'roster', adminCode: ''
+    mode: 'region', ov: null, ovFilter: 'all', ovSort: 'roster', ovMetric: 'w', adminCode: ''
   };
 
   /* ---------------- 색상 ---------------- */
@@ -816,14 +841,18 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       var grid = document.createElement('div');
       grid.className = 'dgrid';
       mo.items.forEach(function(it){
-        var filled = 0;
-        state.data.groups.forEach(function(g){
-          g.members.forEach(function(m){ if (m.marks[it.i]) filled++; });
+        var w = 0, g = 0;
+        state.data.groups.forEach(function(gr){
+          gr.members.forEach(function(m){
+            if (m.marks[it.i]) w++;
+            if (m.gmarks[it.i]) g++;
+          });
         });
+        var count = state.data.hasGroup ? ((w || g) ? w + '·' + g : '') : (w ? w + '명' : '');
         var isToday = (it.i === state.data.defaultDateIndex);
         var b = document.createElement('button');
         b.className = 'dbtn' + (it.i === state.dateIndex ? ' on' : '') + (isToday ? ' today' : '');
-        b.innerHTML = '<b>' + it.d.day + '</b><small>' + (filled ? filled + '명' : '') + '</small>' +
+        b.innerHTML = '<b>' + it.d.day + '</b><small>' + count + '</small>' +
           (isToday ? '<span class="flag">오늘</span>' : '');
         b.onclick = function(){
           flush(true);
@@ -838,17 +867,30 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     });
 
     document.getElementById('selDateVal').textContent = state.data.dates[state.dateIndex].label;
+    document.getElementById('datePanelTitle').textContent = state.data.hasGroup
+      ? '주일 선택 · 숫자는 예배·순모임 체크 인원' : '주일 선택';
   }
 
   /* ---------------- 명단 ---------------- */
+  // kind: 'w' = 주일예배, 'g' = 순모임
+  function marksOf(m, kind){ return kind === 'g' ? m.gmarks : m.marks; }
+  function colOf(kind){
+    var d = state.data.dates[state.dateIndex];
+    return kind === 'g' ? d.gcol : d.col;
+  }
+  function countOn(members, kind){
+    var di = state.dateIndex;
+    return members.filter(function(m){ return marksOf(m, kind)[di]; }).length;
+  }
+
   function renderGroups(){
     var box = document.getElementById('groups');
     box.innerHTML = '';
     var di = state.dateIndex;
+    var hasW = !!colOf('w');
+    var hasG = !!colOf('g');
 
     state.data.groups.forEach(function(g, gi){
-      var on = g.members.filter(function(m){ return m.marks[di]; }).length;
-
       var sec = document.createElement('div');
       sec.className = 'group';
 
@@ -856,37 +898,45 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       head.className = 'ghead';
       head.innerHTML =
         '<span class="gname">' + esc(g.name) + '</span>' +
-        '<span class="gpill" id="gp' + gi + '">' + on + ' / ' + g.members.length + '</span>';
-      var all = document.createElement('button');
-      all.className = 'gall';
-      all.textContent = '순 전체';
-      all.onclick = function(){ toggleGroup(gi); };
-      head.appendChild(all);
+        '<span class="gsub" id="gs' + gi + '"></span>';
       sec.appendChild(head);
 
-      var bar = document.createElement('div');
-      bar.className = 'gbar';
-      bar.innerHTML = '<i id="gb' + gi + '" style="width:' +
-        (g.members.length ? Math.round(on / g.members.length * 100) : 0) + '%"></i>';
-      sec.appendChild(bar);
+      // 두 체크 칸 바로 위에 같은 너비로 '전체' 버튼
+      var cols = document.createElement('div');
+      cols.className = 'gcols';
+      cols.innerHTML = '<span>' + g.members.length + '명 · 이 순 한꺼번에</span>';
+      [['w', '예배 전체', hasW], ['g', '순모임 전체', hasG]].forEach(function(t){
+        var b = document.createElement('button');
+        b.className = 'gall ' + t[0];
+        b.textContent = t[1];
+        b.disabled = !t[2];
+        b.onclick = function(){ toggleGroup(gi, t[0]); };
+        cols.appendChild(b);
+      });
+      sec.appendChild(cols);
 
       var ul = document.createElement('ul');
       ul.className = 'list';
       g.members.forEach(function(m, mi){
         var li = document.createElement('li');
         var row = document.createElement('div');
-        row.className = 'row' + (m.marks[di] ? ' on' : '');
+        row.className = 'row' + (m.marks[di] ? ' w' : '');
         row.id = 'r' + gi + '_' + mi;
-        row.onclick = function(){ toggleOne(gi, mi); };
         var ph = m.phone
-          ? '<a class="ph" href="tel:' + esc(m.phone.replace(/[^0-9+]/g,'')) +
-            '" onclick="event.stopPropagation()">' + esc(m.phone) + '</a>'
+          ? '<a class="ph" href="tel:' + esc(m.phone.replace(/[^0-9+]/g,'')) + '">' + esc(m.phone) + '</a>'
           : '<span class="ph">연락처 없음</span>';
         var tag = (m.lead && g.name !== '지역장') ? '<span class="tag">순장</span>' : '';
         row.innerHTML =
           '<span class="ava">' + esc(m.name.charAt(0)) + '</span>' +
           '<span class="who"><span class="nm">' + esc(m.name) + tag + '</span>' + ph + '</span>' +
-          '<span class="chk">✓</span>';
+          '<span class="cks">' +
+            '<button class="ck w' + (m.marks[di] ? ' on' : '') + '" id="cw' + gi + '_' + mi + '"' +
+              (hasW ? '' : ' disabled') + '><i>✓</i>예배</button>' +
+            '<button class="ck g' + (m.gmarks[di] ? ' on' : '') + '" id="cg' + gi + '_' + mi + '"' +
+              (hasG ? '' : ' disabled') + '><i>✓</i>순모임</button>' +
+          '</span>';
+        row.querySelector('.ck.w').onclick = function(){ toggleOne(gi, mi, 'w'); };
+        row.querySelector('.ck.g').onclick = function(){ toggleOne(gi, mi, 'g'); };
         li.appendChild(row);
         ul.appendChild(li);
       });
@@ -896,60 +946,79 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     updateSummary();
   }
 
+  function setRing(id, pct){
+    document.getElementById(id).setAttribute('stroke-dashoffset', String(153.9 - 153.9 * pct / 100));
+  }
+
   function updateSummary(){
-    var di = state.dateIndex, total = 0, on = 0;
-    state.data.groups.forEach(function(g, gi){
-      var gOn = 0;
-      g.members.forEach(function(m){ total++; if (m.marks[di]){ on++; gOn++; } });
-      var p = document.getElementById('gp' + gi);
-      if (p) p.textContent = gOn + ' / ' + g.members.length;
-      var b = document.getElementById('gb' + gi);
-      if (b) b.style.width = (g.members.length ? Math.round(gOn / g.members.length * 100) : 0) + '%';
+    var di = state.dateIndex, total = 0, w = 0, g = 0;
+    state.data.groups.forEach(function(gr, gi){
+      var gw = countOn(gr.members, 'w'), gg = countOn(gr.members, 'g');
+      total += gr.members.length; w += gw; g += gg;
+      var el = document.getElementById('gs' + gi);
+      if (el) el.innerHTML = '예배 <b>' + gw + '</b> · 순모임 <b>' + gg + '</b> / ' + gr.members.length;
     });
 
-    var pct = total ? Math.round(on / total * 100) : 0;
-    document.getElementById('cntPresent').textContent = on;
-    document.getElementById('cntTotal').textContent = total;
-    document.getElementById('lgP').textContent = on;
-    document.getElementById('lgA').textContent = total - on;
-    document.getElementById('pctTxt').textContent = pct + '%';
-    document.getElementById('meterBar').style.width = pct + '%';
-    document.getElementById('ringArc').setAttribute('stroke-dashoffset',
-      String(232.5 - 232.5 * pct / 100));
-    document.getElementById('sumCap').textContent = state.data.dates[di].label + ' 주일';
-    document.getElementById('note').textContent =
-      state.data.title + ' · ' + state.data.dates[di].label + ' 칸에 기록됩니다';
+    var hasG = !!colOf('g');
+    var pw = total ? Math.round(w / total * 100) : 0;
+    var pg = total ? Math.round(g / total * 100) : 0;
+    document.getElementById('cntW').textContent = w;
+    document.getElementById('cntG').textContent = hasG ? g : '—';
+    Array.prototype.forEach.call(document.querySelectorAll('.cntT'), function(el){ el.textContent = total; });
+    document.getElementById('pctW').textContent = pw + '%';
+    document.getElementById('pctG').textContent = hasG ? pg + '%' : '—';
+    setRing('ringW', pw);
+    setRing('ringG', hasG ? pg : 0);
+    document.getElementById('sumG').classList.toggle('off', !hasG);
+    document.getElementById('qbtnG').disabled = !hasG;
+
+    var d = state.data.dates[di];
+    document.getElementById('sumCap').textContent = d.label + ' 주일 · 순모임은 그 주에 모인 것';
+    document.getElementById('note').textContent = hasG
+      ? state.data.title + ' · ' + d.label + ' 예배 칸과 순모임 칸에 기록됩니다'
+      : '이 지역 시트에는 아직 순모임 칸이 없습니다. 다른 지역처럼 날짜마다 주일출석·순모임출석 두 칸으로 나눠 주세요.';
   }
 
   /* ---------------- 체크 ---------------- */
-  function setMember(gi, mi, checked){
+  function setMember(gi, mi, kind, checked){
     var di = state.dateIndex;
+    var col = colOf(kind);
+    if (!col) return;
     var m = state.data.groups[gi].members[mi];
-    if (m.marks[di] === checked) return;
-    m.marks[di] = checked;
-    var row = document.getElementById('r' + gi + '_' + mi);
-    if (row) row.classList.toggle('on', checked);
-    var col = state.data.dates[di].col;
+    var arr = marksOf(m, kind);
+    if (arr[di] === checked) return;
+    arr[di] = checked;
+    var btn = document.getElementById((kind === 'g' ? 'cg' : 'cw') + gi + '_' + mi);
+    if (btn) btn.classList.toggle('on', checked);
+    if (kind === 'w'){
+      var row = document.getElementById('r' + gi + '_' + mi);
+      if (row) row.classList.toggle('w', checked);
+    }
     state.pending[m.row + ':' + col] = { row: m.row, col: col, checked: checked };
   }
 
-  function toggleOne(gi, mi){
+  function toggleOne(gi, mi, kind){
     var di = state.dateIndex;
-    setMember(gi, mi, !state.data.groups[gi].members[mi].marks[di]);
+    setMember(gi, mi, kind, !marksOf(state.data.groups[gi].members[mi], kind)[di]);
     updateSummary(); schedule();
   }
 
-  function toggleGroup(gi){
+  function toggleGroup(gi, kind){
     var di = state.dateIndex;
     var g = state.data.groups[gi];
-    var allOn = g.members.every(function(m){ return m.marks[di]; });
-    g.members.forEach(function(m, mi){ setMember(gi, mi, !allOn); });
+    var allOn = g.members.every(function(m){ return marksOf(m, kind)[di]; });
+    g.members.forEach(function(m, mi){ setMember(gi, mi, kind, !allOn); });
     updateSummary(); schedule();
   }
 
-  function markAll(checked){
+  // 한 번 누르면 전체 체크, 이미 전부 체크돼 있으면 전체 해제
+  function markAll(kind){
+    var di = state.dateIndex;
+    var allOn = state.data.groups.every(function(g){
+      return g.members.every(function(m){ return marksOf(m, kind)[di]; });
+    });
     state.data.groups.forEach(function(g, gi){
-      g.members.forEach(function(m, mi){ setMember(gi, mi, checked); });
+      g.members.forEach(function(m, mi){ setMember(gi, mi, kind, !allOn); });
     });
     updateSummary(); schedule();
   }
@@ -1026,6 +1095,11 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       .withSuccessHandler(function(ov){
         if (state.mode !== 'overview') return;
         state.ov = ov;
+        var anyG = ov.regions.some(function(r){ return r.hasGroup; });
+        document.getElementById('ovMetric').classList.toggle('hidden', !anyG);
+        if (!anyG) state.ovMetric = 'w';
+        document.getElementById('metW').classList.toggle('on', state.ovMetric === 'w');
+        document.getElementById('metG').classList.toggle('on', state.ovMetric === 'g');
         var known = ov.regions.some(function(r){ return r.id === state.ovFilter; });
         if (!known) state.ovFilter = 'all';
 
@@ -1048,14 +1122,26 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       .getOverview(state.adminCode);
   }
 
-  function statOf(r, m){
-    var att = 0, rec = 0;
-    for (var j = 0; j < m.marks.length; j++){
-      if (!r.recorded[j] || m.marks[j] == null) continue;
-      rec++;
-      if (m.marks[j] === 1) att++;
+  // metric: 'w' 주일예배, 'g' 순모임 (생략하면 지금 보고 있는 쪽)
+  function ovMarks(m, metric){ return (metric || state.ovMetric) === 'g' ? m.gmarks : m.marks; }
+  function ovRec(r, metric){ return (metric || state.ovMetric) === 'g' ? r.grecorded : r.recorded; }
+
+  function statOf(r, m, metric){
+    var marks = ovMarks(m, metric), rec = ovRec(r, metric);
+    var att = 0, n = 0;
+    for (var j = 0; j < marks.length; j++){
+      if (!rec[j] || marks[j] == null) continue;
+      n++;
+      if (marks[j] === 1) att++;
     }
-    return { att: att, rec: rec, rate: rec ? att / rec : null };
+    return { att: att, rec: n, rate: n ? att / n : null };
+  }
+
+  function setOvMetric(v){
+    state.ovMetric = v;
+    document.getElementById('metW').classList.toggle('on', v === 'w');
+    document.getElementById('metG').classList.toggle('on', v === 'g');
+    renderOverview();
   }
 
   function regionStat(r){
@@ -1081,10 +1167,10 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     ov.regions.forEach(function(r){
       var s = regionStat(r);
       tot.att += s.att; tot.rec += s.rec; tot.n += s.n;
-      r.recorded.forEach(function(v, j){ if (v) anyRec[j] = true; });
+      ovRec(r).forEach(function(v, j){ if (v) anyRec[j] = true; });
       r.groups.forEach(function(g){
         g.members.forEach(function(m){
-          m.marks.forEach(function(v, j){ if (v === 1) perDate[j]++; });
+          ovMarks(m).forEach(function(v, j){ if (v === 1) perDate[j]++; });
         });
       });
     });
@@ -1092,17 +1178,20 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     var recDays = anyRec.filter(Boolean).length;
     var sumAtt = perDate.reduce(function(a, v, j){ return a + (anyRec[j] ? v : 0); }, 0);
 
-    document.getElementById('ovTitle').textContent = ov.title + ' 전체';
+    var isG = state.ovMetric === 'g';
+    document.getElementById('ovTitle').textContent = ov.title + ' 전체 · ' + (isG ? '순모임' : '주일예배');
+    document.getElementById('ovLegendTip').textContent =
+      isG ? '칸 하나가 한 주의 순모임, 오른쪽이 최근' : '칸 하나가 주일 하루, 오른쪽이 최근';
     document.getElementById('ovAt').textContent = ov.at + ' 기준';
     document.getElementById('ovStats').innerHTML =
       '<div class="stat main"><small>평균 출석률</small><b>' + pct(tot.rec ? tot.att / tot.rec : null) + '</b></div>' +
-      '<div class="stat"><small>주일 평균</small><b>' + (recDays ? Math.round(sumAtt / recDays) : '—') + '<em>명</em></b></div>' +
+      '<div class="stat"><small>' + (isG ? '주 평균' : '주일 평균') + '</small><b>' + (recDays ? Math.round(sumAtt / recDays) : '—') + '<em>명</em></b></div>' +
       '<div class="stat"><small>순원</small><b>' + tot.n + '<em>명</em></b></div>';
 
     // 주일별 교구 출석 인원
     var bars = document.getElementById('ovBars');
     if (!ov.dates.length){
-      bars.innerHTML = '<div class="bars-empty">아직 지난 주일 기록이 없습니다</div>';
+      bars.innerHTML = '<div class="bars-empty">아직 지난 주 기록이 없습니다</div>';
     } else {
       var max = Math.max.apply(null, perDate.concat([1]));
       bars.innerHTML = ov.dates.map(function(d, j){
@@ -1181,11 +1270,16 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 
   function ovRow(r, ri, g, m, s, withWhere){
     var dates = state.ov.dates;
-    var dots = m.marks.map(function(v, j){
-      var cls = (!r.recorded[j] || v == null) ? 'na' : (v === 1 ? 'on' : '');
+    var rec = ovRec(r);
+    var dots = ovMarks(m).map(function(v, j){
+      var cls = (!rec[j] || v == null) ? 'na' : (v === 1 ? 'on' : '');
       return '<i class="dot ' + cls + '" title="' + esc(dates[j].label) + '"></i>';
     }).join('');
-    var where = withWhere ? regionNo(r, ri) + '지역 · ' + g.name : '';
+    var other = '';
+    if (state.ovMetric === 'g') other = '예배 ' + pct(statOf(r, m, 'w').rate);
+    else if (r.hasGroup) other = '순모임 ' + pct(statOf(r, m, 'g').rate);
+    var where = [withWhere ? regionNo(r, ri) + '지역 · ' + g.name : '', other]
+      .filter(Boolean).join(' · ');
     return '<div class="orow"><div class="omain"><div class="oname">' + esc(m.name) +
       (m.lead ? '<span class="tag">순장</span>' : '') +
       (where ? '<span class="ometa">' + esc(where) + '</span>' : '') + '</div>' +
@@ -1254,12 +1348,22 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 
   function copyAbsent(){
     var di = state.dateIndex;
-    var lines = [state.data.title + ' ' + state.data.dates[di].label + ' 미출석 명단'];
-    state.data.groups.forEach(function(g){
-      var names = g.members.filter(function(m){ return !m.marks[di]; })
-                           .map(function(m){ return m.name; });
-      if (names.length) lines.push(g.name + ': ' + names.join(', '));
-    });
+    var d = state.data.dates[di];
+    var lines = [state.data.title + ' ' + d.label + ' 주'];
+    function section(title, kind){
+      var out = [];
+      state.data.groups.forEach(function(g){
+        if (g.name === '지역장') return;
+        var names = g.members.filter(function(m){ return !marksOf(m, kind)[di]; })
+                             .map(function(m){ return m.name; });
+        if (names.length) out.push(g.name + ': ' + names.join(', '));
+      });
+      lines.push('');
+      lines.push('[' + title + ']');
+      lines.push(out.length ? out.join('\n') : '없음');
+    }
+    section('주일예배 미출석', 'w');
+    if (d.gcol) section('순모임 미참석', 'g');
     var text = lines.join('\n');
     var ta = document.createElement('textarea');
     ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
