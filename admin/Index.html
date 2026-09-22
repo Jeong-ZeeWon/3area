@@ -10,16 +10,14 @@
 <style>
 :root{
   color-scheme: light;
-  --brand:#2B3A55; --brand-2:#3b4f75; --brand-soft:rgba(43,58,85,.08);
+  --brand:#2B3A55; --brand-2:#3b4f75;
   --paper:#f4f2ee; --card:#ffffff; --card-2:#faf8f5;
   --line:#e8e3da; --line-2:#f0ece5;
   --ink:#1c1a17; --ink-2:#4e483f; --muted:#8c847a;
-  --good:#2E7D5B; --good-soft:rgba(46,125,91,.12);
-  --mid:#A87B22;  --mid-soft:rgba(176,132,45,.15);
-  --low:#B04936;  --low-soft:rgba(176,73,54,.12);
+  --good:#2E7D5B; --mid:#A87B22; --low:#B04936; --low-soft:rgba(176,73,54,.12);
   --w:#2E7D5B;    /* 주일예배 */
   --g:#C27A26;    /* 순모임 */
-  --r-xl:22px; --r-md:14px; --r-sm:10px;
+  --r-xl:22px; --r-md:14px;
   --sh-1:0 1px 2px rgba(28,26,23,.04), 0 3px 12px rgba(28,26,23,.05);
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -48,30 +46,27 @@ button{font-family:inherit; color:inherit;}
   color:#fff; border-radius:11px; padding:8px 12px; font-size:13px; font-weight:500; cursor:pointer;
 }
 .tbtn:active{background:rgba(255,255,255,.3);}
-.ctl{max-width:1080px; margin:0 auto; padding:0 16px 12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-.weeks{flex:1 1 260px; min-width:0; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding:2px 0;}
+.ctl{max-width:1080px; margin:0 auto; padding:0 16px 12px;}
+.weeks{display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding:2px 0;}
 .weeks::-webkit-scrollbar{display:none;}
 .wk{
   flex:0 0 auto; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.1); color:#fff;
   border-radius:99px; padding:6px 12px; font-size:13px; font-weight:500; cursor:pointer; white-space:nowrap;
 }
 .wk.on{background:#fff; color:var(--brand); font-weight:700; border-color:#fff;}
-.kind{flex:0 0 auto; display:flex; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:12px; padding:3px;}
-.kind button{border:0; background:transparent; color:rgba(255,255,255,.85); border-radius:9px; padding:7px 13px; font-size:13px; font-weight:500; cursor:pointer;}
-.kind button.on{background:#fff; color:var(--brand); font-weight:700;}
 
 /* ---------- 본문 ---------- */
 .wrap{max-width:1080px; margin:0 auto; padding:16px 14px 40px;}
 .card{background:var(--card); border:1px solid var(--line); border-radius:var(--r-xl); box-shadow:var(--sh-1); margin-bottom:14px; overflow:hidden;}
 .head{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 10px; padding:15px 18px 6px;}
-.head h2{margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.025em;}
+.head h2{margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.025em; display:flex; align-items:center; gap:7px;}
+.head h2 i{width:9px; height:9px; border-radius:50%; display:inline-block;}
 .head span{font-size:12px; color:var(--muted);}
-.grid{display:grid; grid-template-columns:1fr; gap:0 14px;}
-@media (min-width:900px){ .grid{grid-template-columns:1.35fr 1fr;} }
 
 /* 요약 카드 */
 .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px;}
-@media (min-width:900px){ .cards{grid-template-columns:repeat(4,1fr);} }
+.cards .kpi:nth-child(3){grid-column:1 / -1;}
+@media (min-width:760px){ .cards{grid-template-columns:repeat(3,1fr);} .cards .kpi:nth-child(3){grid-column:auto;} }
 .kpi{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); box-shadow:var(--sh-1); padding:13px 14px 12px; min-width:0;}
 .kpi small{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-2); font-weight:700;}
 .kpi small i{width:8px; height:8px; border-radius:50%; display:inline-block;}
@@ -80,13 +75,6 @@ button{font-family:inherit; color:inherit;}
 .kpi p{margin:3px 0 0; font-size:12px; color:var(--muted);}
 .up{color:var(--good); font-weight:700;} .down{color:var(--low); font-weight:700;} .same{color:var(--muted);}
 .kpi.alert b{color:var(--low);}
-
-/* 추이 그래프 */
-.trend{padding:4px 10px 12px;}
-.trend svg{display:block; width:100%; height:auto;}
-.legend{display:flex; gap:14px; font-size:12px; color:var(--muted);}
-.legend span{display:inline-flex; align-items:center; gap:5px;}
-.legend i{width:14px; height:3px; border-radius:2px; display:inline-block;}
 
 /* 기록 점검 */
 .checks{padding:4px 16px 14px;}
@@ -99,8 +87,8 @@ button{font-family:inherit; color:inherit;}
 .chk .tx div{color:var(--ink-2); font-size:12.5px; margin-top:2px;}
 .chk a{color:var(--brand-2); text-decoration:none; white-space:nowrap;}
 
-/* 히트맵 */
-.hm-wrap{overflow-x:auto; padding:6px 12px 14px;}
+/* 지역별 출석률 표 */
+.hm-wrap{overflow-x:auto; padding:6px 12px 10px;}
 table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max-content;}
 .hm th, .hm td{font-size:12px; text-align:center; white-space:nowrap;}
 .hm thead th{color:var(--muted); font-weight:500; padding:2px 4px;}
@@ -123,28 +111,9 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
 .scale{display:flex; align-items:center; gap:6px; padding:0 16px 14px; font-size:11.5px; color:var(--muted); flex-wrap:wrap;}
 .scale i{width:22px; height:12px; border-radius:3px; display:inline-block;}
 
-/* 돌봄 명단 */
-.chips{display:flex; gap:6px; flex-wrap:wrap; padding:4px 16px 8px;}
-.chip{border:1.5px solid var(--line); background:var(--card-2); border-radius:99px; padding:6px 12px; font-size:13px; font-weight:500; cursor:pointer;}
-.chip b{margin-left:4px;}
-.chip.on{background:var(--brand); border-color:var(--brand); color:#fff; font-weight:700;}
-.care{padding:0 0 4px;}
-.crow{display:flex; align-items:center; gap:10px; padding:11px 16px; border-top:1px solid var(--line-2);}
-.crow .main{flex:1; min-width:0;}
-.crow .nm{font-size:15px; font-weight:700; letter-spacing:-.02em;}
-.crow .tag{display:inline-block; margin-left:5px; vertical-align:2px; font-size:10.5px; font-weight:700; color:var(--brand); border:1px solid rgba(43,58,85,.3); padding:0 6px 1px; border-radius:99px;}
-.crow .where{font-size:12px; color:var(--muted); margin-left:6px;}
-.crow .why{font-size:12.5px; margin-top:2px;}
-.crow .why.streak{color:var(--low);} .crow .why.drop{color:var(--mid);} .crow .why.back{color:var(--good);}
-.crow a{flex:0 0 auto; font-size:12.5px; color:var(--brand-2); text-decoration:none; border:1px solid var(--line); border-radius:9px; padding:6px 9px; white-space:nowrap;}
-.crow a.none{color:var(--muted); border-style:dashed;}
-.rhead{padding:12px 16px 4px; font-size:12.5px; font-weight:700; color:var(--ink-2); background:var(--card-2); border-top:1px solid var(--line-2);}
-.care-foot{display:flex; justify-content:flex-end; padding:10px 16px 14px; border-top:1px solid var(--line-2);}
-.btn{background:var(--brand); color:#fff; border:0; border-radius:11px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer;}
-.empty{padding:18px 16px 20px; color:var(--muted); font-size:13.5px; text-align:center;}
-
 .foot{font-size:11.5px; color:var(--muted); line-height:1.7; padding:0 6px;}
 .msg{padding:14px 16px; border-radius:var(--r-md); background:var(--low-soft); color:var(--low); font-weight:500; margin-bottom:14px;}
+.empty{padding:18px 16px 20px; color:var(--muted); font-size:13.5px; text-align:center;}
 .loading{padding:60px 0; text-align:center; color:var(--muted);}
 .spin{width:28px; height:28px; margin:0 auto 12px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--brand); animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -157,12 +126,12 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   body{background:#fff; font-size:12px;}
   .top{position:static; box-shadow:none; background:#fff; color:var(--ink); border-bottom:2px solid var(--ink);}
   .top-tt p{opacity:1;}
-  .tbtn, .ctl, .chips, .care-foot, .crow a{display:none !important;}
+  .tbtn, .ctl{display:none !important;}
   .card, .kpi{box-shadow:none; break-inside:avoid;}
   .hm-wrap{overflow:visible;}
   .hm th.rh{position:static;}
-  .grid{grid-template-columns:1fr 1fr;}
-  .cards{grid-template-columns:repeat(4,1fr);}
+  .cards{grid-template-columns:repeat(3,1fr);}
+  .cards .kpi:nth-child(3){grid-column:auto;}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
 }
 </style>
@@ -180,10 +149,6 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   </div>
   <div class="ctl">
     <div class="weeks" id="weeks"></div>
-    <div class="kind">
-      <button id="kindW" class="on" onclick="setKind('w')">주일예배</button>
-      <button id="kindG" onclick="setKind('g')">순모임</button>
-    </div>
   </div>
 </header>
 
@@ -194,35 +159,21 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   <div id="body" class="hidden">
     <section class="cards" id="cards"></section>
 
-    <div class="grid">
-      <section class="card">
-        <div class="head">
-          <h2>주별 추이</h2>
-          <span class="legend">
-            <span><i style="background:var(--w)"></i>주일예배</span>
-            <span><i style="background:var(--g)"></i>순모임</span>
-          </span>
-        </div>
-        <div class="trend" id="trend"></div>
-      </section>
-
-      <section class="card">
-        <div class="head"><h2>기록 점검</h2><span id="checkSub"></span></div>
-        <div class="checks" id="checks"></div>
-      </section>
-    </div>
-
     <section class="card">
-      <div class="head"><h2 id="heatTitle">지역별 출석률</h2><span>지역을 누르면 순별로 펼쳐집니다</span></div>
-      <div class="hm-wrap" id="heat"></div>
-      <div class="scale" id="scale"></div>
+      <div class="head"><h2>기록 점검</h2><span id="checkSub"></span></div>
+      <div class="checks" id="checks"></div>
     </section>
 
     <section class="card">
-      <div class="head"><h2 id="careTitle">돌봄이 필요한 분</h2><span id="careSub"></span></div>
-      <div class="chips" id="careChips"></div>
-      <div class="care" id="care"></div>
-      <div class="care-foot"><button class="btn" onclick="copyCare()">명단 복사</button></div>
+      <div class="head"><h2><i style="background:var(--w)"></i>지역별 주일예배 출석률</h2><span>지역을 누르면 순별로 펼쳐집니다</span></div>
+      <div class="hm-wrap" id="heatW"></div>
+      <div class="scale" id="scaleW"></div>
+    </section>
+
+    <section class="card">
+      <div class="head"><h2><i style="background:var(--g)"></i>지역별 순모임 출석률</h2><span>지역을 누르면 순별로 펼쳐집니다</span></div>
+      <div class="hm-wrap" id="heatG"></div>
+      <div class="scale" id="scaleG"></div>
     </section>
 
     <p class="foot" id="foot"></p>
@@ -232,19 +183,15 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
 <div class="toast" id="toast"></div>
 
 <script>
-  // 돌봄 명단 기준 (필요하면 숫자만 바꾸세요)
-  var CARE_STREAK = 3;        // 이 주 수 이상 연속 결석이면 '연속 결석'
-  var DROP_RECENT = 4;        // 최근 이 주 수를 이전과 비교해 '출석 급감'을 본다
-  var DROP_BEFORE = 0.75;     // 이전 출석률이 이 이상이었는데
-  var DROP_AFTER = 0.25;      // 최근 출석률이 이 이하로 떨어지면 '출석 급감'
-  var BACK_AFTER = 2;         // 이 주 수 이상 결석하다가 이번 주에 나오면 '다시 나옴'
-
   var PALETTE = ['#2E7D5B','#3A6EA5','#8D5BA6','#BF6B36','#42806B',
                  '#5F63C4','#A8506A','#2C8683','#8C6B2A','#55697C'];
-  var HEAT = ['#f3f6f3','#d6ebdd','#a9d3b9','#6fb591','#3f9368','#2E7D5B'];
-  var KIND_NAME = { w: '주일예배', g: '순모임' };
+  // 표 칸 색: 출석률이 높을수록 진하게 (주일예배는 초록, 순모임은 주황 계열)
+  var HEAT = {
+    w: ['#f3f6f3','#d6ebdd','#a9d3b9','#6fb591','#3f9368','#2E7D5B'],
+    g: ['#faf5ee','#f5e3cc','#ebc99c','#dca868','#c9863a','#a8661d']
+  };
 
-  var S = { data: null, week: 0, kind: 'w', open: {}, careFilter: 'need', rec: {} };
+  var S = { data: null, week: 0, open: {}, rec: {} };
 
   /* ---------------- 불러오기 ---------------- */
   function load(force){
@@ -329,11 +276,10 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   }
 
   function pct(x){ return x == null ? '—' : Math.round(x * 100) + '%'; }
-  function wlabel(j){ var w = S.data.weeks[j]; return w ? w.month + '/' + w.day : ''; }
-  function heatColor(rate){
-    if (rate == null) return null;
-    var i = Math.min(HEAT.length - 1, Math.floor(rate * HEAT.length));
-    return { bg: HEAT[i], fg: i >= 4 ? '#fff' : 'var(--ink)' };
+  function heatColor(kind, rate){
+    var pal = HEAT[kind];
+    var i = Math.min(pal.length - 1, Math.floor(rate * pal.length));
+    return { bg: pal[i], fg: i >= 4 ? '#fff' : 'var(--ink)' };
   }
   function regionColor(r, i){
     var m = String(r.title).match(/(\d+)\s*지역/);
@@ -352,9 +298,9 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function tel(phone, label){
-    if (!phone) return '<a class="none">연락처 없음</a>';
-    return '<a href="tel:' + esc(phone.replace(/[^0-9+]/g, '')) + '">' + esc(label || phone) + '</a>';
+  function tel(phone){
+    if (!phone) return '연락처 없음';
+    return '<a href="tel:' + esc(phone.replace(/[^0-9+]/g, '')) + '">' + esc(phone) + '</a>';
   }
 
   /* ---------------- 그리기 ---------------- */
@@ -364,19 +310,15 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
         '<div class="card"><div class="empty">아직 지난 주일이 없습니다. 첫 주일이 지나면 현황이 나타납니다.</div></div>';
       return;
     }
-    renderWeeks(); renderCards(); renderTrend(); renderChecks(); renderHeat(); renderCare();
+    renderWeeks(); renderCards(); renderChecks();
+    renderHeat('w', 'heatW', 'scaleW');
+    renderHeat('g', 'heatG', 'scaleG');
     document.getElementById('foot').textContent =
       '시트에 있는 정보만 사용합니다. 오늘 이후 날짜는 넣지 않고, 한 지역에서 아무도 체크하지 않은 주는 ' +
       '아직 기록하지 않은 주로 보고 출석률 계산에서 뺍니다. 지역장 행은 순 안의 같은 이름과 겹치므로 셈에서 뺐습니다.';
   }
 
   function setWeek(j){ S.week = j; render(); }
-  function setKind(k){
-    S.kind = k;
-    document.getElementById('kindW').classList.toggle('on', k === 'w');
-    document.getElementById('kindG').classList.toggle('on', k === 'g');
-    render();
-  }
 
   function renderWeeks(){
     var box = document.getElementById('weeks');
@@ -410,78 +352,14 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   function renderCards(){
     var j = S.week;
     var w = weekStats('w', j), g = weekStats('g', j);
-    var care = careList(S.kind, j).filter(function(x){ return x.tag !== 'back'; }).length;
-
     document.getElementById('cards').innerHTML =
       '<div class="kpi"><small><i style="background:var(--w)"></i>주일예배 출석</small>' +
         '<b>' + (w.done ? w.att : '—') + '<em>명 · ' + pct(w.rate) + '</em></b><p>' + delta('w', j) + '</p></div>' +
       '<div class="kpi"><small><i style="background:var(--g)"></i>순모임 참석</small>' +
         '<b>' + (g.done ? g.att : '—') + '<em>명 · ' + pct(g.rate) + '</em></b><p>' + delta('g', j) + '</p></div>' +
-      '<div class="kpi' + ((w.done < w.total) ? ' alert' : '') + '"><small>기록 완료 지역</small>' +
-        '<b>' + w.done + '<em>/ ' + w.total + ' 지역</em></b>' +
-        '<p>순모임 ' + g.done + ' / ' + g.total + ' 지역</p></div>' +
-      '<div class="kpi' + (care ? ' alert' : '') + '"><small>돌봄 필요 (' + KIND_NAME[S.kind] + ')</small>' +
-        '<b>' + care + '<em>명</em></b><p>연속 결석·출석 급감</p></div>';
-  }
-
-  function renderTrend(){
-    var n = S.data.weeks.length;
-    var W = 640, H = 230, L = 38, R = 18, T = 22, B = 30;
-    var sw = [], sg = [], pw = [], pg = [];
-    for (var j = 0; j < n; j++){
-      var a = weekStats('w', j), b = weekStats('g', j);
-      sw.push(a.done ? a.att : null); sg.push(b.done ? b.att : null);
-      pw.push(a.done && a.done < a.total); pg.push(b.done && b.done < b.total);   // 일부 지역만 기록한 주
-    }
-    var vals = sw.concat(sg).filter(function(v){ return v != null; });
-    var max = Math.max.apply(null, vals.concat([10])) * 1.12;
-    var step = max > 200 ? 50 : max > 100 ? 25 : max > 40 ? 10 : 5;
-    max = Math.ceil(max / step) * step;
-    var x = function(j){ return n === 1 ? (L + (W - L - R) / 2) : L + j * (W - L - R) / (n - 1); };
-    var y = function(v){ return T + (H - T - B) * (1 - v / max); };
-
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="주별 출석 추이">';
-    // 선택한 주 표시
-    var bw = n === 1 ? 60 : Math.min(60, (W - L - R) / (n - 1) * .7);
-    svg += '<rect x="' + (x(S.week) - bw / 2) + '" y="' + (T - 14) + '" width="' + bw + '" height="' + (H - T - B + 14) +
-      '" rx="8" fill="rgba(43,58,85,.06)"/>';
-    // 눈금
-    [0, max / 2, max].forEach(function(v){
-      svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="#ece7df" stroke-width="1"/>' +
-        '<text x="' + (L - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="11" fill="#8c847a">' + v + '</text>';
-    });
-    // 선
-    // part[j] 가 참인 주(일부 지역만 기록)는 속이 빈 점과 * 로 표시한다
-    function line(series, part, color){
-      var d = '', pen = false, pts = '';
-      series.forEach(function(v, j){
-        if (v == null){ pen = false; return; }
-        d += (pen ? 'L' : 'M') + x(j).toFixed(1) + ' ' + y(v).toFixed(1) + ' ';
-        pen = true;
-        var show = n <= 12 || j === S.week || j === n - 1;
-        pts += '<circle cx="' + x(j) + '" cy="' + y(v) + '" r="' + (j === S.week ? 5 : 3.5) + '" fill="' +
-          (part[j] ? '#fff' : color) + '" stroke="' + (part[j] ? color : '#fff') + '" stroke-width="' + (part[j] ? 2 : 1.5) + '"/>' +
-          (show ? '<text x="' + x(j) + '" y="' + (y(v) - 9) + '" text-anchor="middle" font-size="11" font-weight="700" fill="' + color + '">' +
-            v + (part[j] ? '*' : '') + '</text>' : '');
-      });
-      return (d ? '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' : '') + pts;
-    }
-    svg += line(sw, pw, '#2E7D5B') + line(sg, pg, '#C27A26');
-    // 날짜
-    var every = n > 12 ? 2 : 1;
-    for (var k = 0; k < n; k++){
-      if (k % every && k !== S.week) continue;
-      svg += '<text x="' + x(k) + '" y="' + (H - 9) + '" text-anchor="middle" font-size="11" fill="' +
-        (k === S.week ? '#2B3A55' : '#8c847a') + '" font-weight="' + (k === S.week ? 700 : 400) + '">' + wlabel(k) + '</text>';
-    }
-    svg += '</svg>';
-    if (pw.concat(pg).some(Boolean)){
-      svg += '<p class="foot" style="padding:4px 8px 0">* 속이 빈 점은 일부 지역이 아직 기록하지 않은 주라 실제보다 적게 보입니다.</p>';
-    }
-    if (!vals.length){
-      svg = '<div class="empty">아직 체크된 기록이 없습니다. 지역장들이 출석을 체크하면 여기에 그래프가 나타납니다.</div>';
-    }
-    document.getElementById('trend').innerHTML = svg;
+      '<div class="kpi' + ((w.done < w.total || g.done < g.total) ? ' alert' : '') + '"><small>기록 완료 지역</small>' +
+        '<b>' + w.done + '<em>/ ' + w.total + ' 지역 (예배)</em></b>' +
+        '<p>순모임 ' + g.done + ' / ' + g.total + ' 지역</p></div>';
   }
 
   function renderChecks(){
@@ -494,8 +372,7 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
       S.data.regions.forEach(function(r){
         if (!applies(r, kind)) return;
         if (!S.rec[r.id][kind][j]) {
-          list.push(esc(r.title) + ' (지역장 ' + esc(r.leader || '미지정') + ' ' +
-            (r.leaderPhone ? tel(r.leaderPhone) : '연락처 없음') + ')');
+          list.push(esc(r.title) + ' (지역장 ' + esc(r.leader || '미지정') + ' ' + tel(r.leaderPhone) + ')');
         }
       });
       return list;
@@ -533,11 +410,15 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     }).join('');
   }
 
-  function toggleRegion(id){ S.open[id] = !S.open[id]; renderHeat(); }
+  // 두 표를 따로 펼치고 접을 수 있도록 표 종류와 지역을 함께 기억한다
+  function toggleRegion(kind, id){
+    var key = kind + ':' + id;
+    S.open[key] = !S.open[key];
+    renderHeat(kind, kind === 'g' ? 'heatG' : 'heatW', kind === 'g' ? 'scaleG' : 'scaleW');
+  }
 
-  function renderHeat(){
-    var kind = S.kind, n = S.data.weeks.length;
-    document.getElementById('heatTitle').textContent = '지역별 ' + KIND_NAME[kind] + ' 출석률';
+  function renderHeat(kind, heatId, scaleId){
+    var n = S.data.weeks.length;
     function cells(r, members){
       var html = '', att = 0, base = 0;
       for (var j = 0; j < n; j++){
@@ -545,7 +426,7 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
         var sel = j === S.week ? ' sel' : '';
         if (!t){ html += '<td class="c na' + sel + '">·</td>'; continue; }
         att += t.att; base += t.base;
-        var c = heatColor(t.rate);
+        var c = heatColor(kind, t.rate);
         html += '<td class="c' + sel + '" style="background:' + c.bg + ';color:' + c.fg + '" title="' +
           t.att + '/' + t.base + '명">' + Math.round(t.rate * 100) + '</td>';
       }
@@ -565,8 +446,8 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
           '<td colspan="' + (n + 1) + '" style="color:var(--muted);font-size:12px">—</td></tr>';
         return;
       }
-      var open = !!S.open[r.id];
-      body += '<tr class="rr" onclick="toggleRegion(\'' + esc(r.id).replace(/'/g, "\\'") + '\')">' +
+      var open = !!S.open[kind + ':' + r.id];
+      body += '<tr class="rr" onclick="toggleRegion(\'' + kind + '\', \'' + esc(r.id).replace(/'/g, "\\'") + '\')">' +
         '<th class="rh"><span class="bd" style="background:' + regionColor(r, i) + '">' + esc(regionNo(r, i)) + '</span>' +
         esc(regionNo(r, i)) + '지역<small>' + esc(r.leader) + '</small><span class="arr">' + (open ? '▼' : '▶') + '</span></th>' +
         cells(r, allMembers(r)) + '</tr>';
@@ -578,129 +459,14 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
         });
       }
     });
-    var wrap = document.getElementById('heat');
+    var wrap = document.getElementById(heatId);
     wrap.innerHTML = '<table class="hm"><thead>' + head + '</thead><tbody>' + body + '</tbody></table>';
     // 휴대폰에서도 선택한 주가 바로 보이도록 표를 옆으로 넘겨 둔다
     var selTh = wrap.querySelector('thead th.sel');
     if (selTh) wrap.scrollLeft = Math.max(0, selTh.offsetLeft - wrap.clientWidth + selTh.offsetWidth + 60);
-    document.getElementById('scale').innerHTML = '출석률 ' +
-      ['0', '', '', '', '', '100%'].map(function(t, k){ return '<i style="background:' + HEAT[k] + '"></i>'; }).join('') +
+    document.getElementById(scaleId).innerHTML = '출석률 ' +
+      HEAT[kind].map(function(c){ return '<i style="background:' + c + '"></i>'; }).join('') +
       ' <span>0 → 100%</span> · <i style="background:repeating-linear-gradient(45deg,#f3efe8,#f3efe8 4px,#faf8f5 4px,#faf8f5 8px)"></i> 아직 기록 안 한 주';
-  }
-
-  /* ---------------- 돌봄 명단 ---------------- */
-  // j주까지 기록된 주만 모아 연속 결석·급감·복귀를 판단한다
-  function judge(r, m, kind, j){
-    var s = marksOf(m, kind), rec = S.rec[r.id][kind], seq = [];
-    for (var i = 0; i <= j; i++){
-      if (!rec[i]) continue;
-      var c = s.charAt(i);
-      if (c === '-') continue;
-      seq.push({ i: i, v: c === '1' });
-    }
-    if (!seq.length) return null;
-    var streak = 0;
-    for (var k = seq.length - 1; k >= 0 && !seq[k].v; k--) streak++;
-    var last = -1;
-    for (k = seq.length - 1; k >= 0; k--) if (seq[k].v){ last = seq[k].i; break; }
-
-    if (streak >= CARE_STREAK){
-      return { tag: 'streak', score: 100 + streak,
-        why: last >= 0 ? streak + '주 연속 결석 · 마지막 출석 ' + wlabel(last)
-                       : '기록된 ' + streak + '주 모두 결석' };
-    }
-    if (seq.length >= DROP_RECENT + 2){
-      var recent = seq.slice(-DROP_RECENT), before = seq.slice(0, -DROP_RECENT);
-      var ra = recent.filter(function(x){ return x.v; }).length / recent.length;
-      var ba = before.filter(function(x){ return x.v; }).length / before.length;
-      if (ba >= DROP_BEFORE && ra <= DROP_AFTER){
-        return { tag: 'drop', score: 50 + Math.round((ba - ra) * 10),
-          why: '최근 ' + recent.length + '주 ' + Math.round(ra * recent.length) + '회 · 이전에는 ' + pct(ba) };
-      }
-    }
-    if (seq[seq.length - 1].v && seq[seq.length - 1].i === j){
-      var gap = 0;
-      for (k = seq.length - 2; k >= 0 && !seq[k].v; k--) gap++;
-      if (gap >= BACK_AFTER) return { tag: 'back', score: gap, why: gap + '주 결석 뒤 ' + wlabel(j) + ' 다시 출석' };
-    }
-    return null;
-  }
-
-  function careList(kind, j){
-    var out = [];
-    S.data.regions.forEach(function(r, ri){
-      if (!applies(r, kind)) return;
-      r.groups.forEach(function(g){
-        var ld = leadOf(g);
-        g.members.forEach(function(m){
-          var res = judge(r, m, kind, j);
-          if (res) out.push({ r: r, ri: ri, g: g, m: m, lead: ld, tag: res.tag, why: res.why, score: res.score });
-        });
-      });
-    });
-    // 지역별로 묶어 보여 주고, 지역 안에서는 급한 분(연속 결석이 긴 분)부터
-    out.sort(function(a, b){ return a.ri - b.ri || b.score - a.score; });
-    return out;
-  }
-
-  function setCare(f){ S.careFilter = f; renderCare(); }
-
-  function currentCare(){
-    var all = careList(S.kind, S.week);
-    var f = S.careFilter;
-    return {
-      all: all,
-      shown: all.filter(function(x){ return f === 'need' ? x.tag !== 'back' : x.tag === f; })
-    };
-  }
-
-  function renderCare(){
-    var c = currentCare(), all = c.all;
-    var cnt = function(t){ return all.filter(function(x){ return t === 'need' ? x.tag !== 'back' : x.tag === t; }).length; };
-    document.getElementById('careTitle').textContent = '돌봄이 필요한 분 · ' + KIND_NAME[S.kind];
-    document.getElementById('careSub').textContent = wlabel(S.week) + '까지 기록 기준';
-    document.getElementById('careChips').innerHTML = [
-      ['need', '챙겨야 할 분'], ['streak', CARE_STREAK + '주 이상 연속 결석'], ['drop', '출석 급감'], ['back', '다시 나오신 분']
-    ].map(function(t){
-      return '<button class="chip' + (S.careFilter === t[0] ? ' on' : '') + '" onclick="setCare(\'' + t[0] + '\')">' +
-        t[1] + '<b>' + cnt(t[0]) + '</b></button>';
-    }).join('');
-
-    if (!c.shown.length){
-      document.getElementById('care').innerHTML = '<div class="empty">' +
-        (S.careFilter === 'back' ? '이번 주 다시 나오신 분은 없습니다.' : '해당하는 분이 없습니다. 기록이 몇 주 쌓이면 더 정확해집니다.') + '</div>';
-      return;
-    }
-    var html = '', lastRegion = null;
-    c.shown.forEach(function(x){
-      if (lastRegion !== x.r.id){
-        html += '<div class="rhead">' + esc(x.r.title) + (x.r.leader ? ' · 지역장 ' + esc(x.r.leader) : '') + '</div>';
-        lastRegion = x.r.id;
-      }
-      html += '<div class="crow"><div class="main">' +
-        '<span class="nm">' + esc(x.m.name) + '</span>' + (x.m.lead ? '<span class="tag">순장</span>' : '') +
-        '<span class="where">' + esc(x.g.name) + (x.lead && !x.m.lead ? ' · 순장 ' + esc(x.lead) : '') + '</span>' +
-        '<div class="why ' + x.tag + '">' + esc(x.why) + '</div></div>' + tel(x.m.phone) + '</div>';
-    });
-    document.getElementById('care').innerHTML = html;
-  }
-
-  function copyCare(){
-    var c = currentCare();
-    var names = { need: '챙겨야 할 분', streak: '연속 결석', drop: '출석 급감', back: '다시 나오신 분' };
-    var lines = [S.data.title + ' ' + S.data.weeks[S.week].month + '월 ' + S.data.weeks[S.week].day + '일 기준 · ' +
-      KIND_NAME[S.kind] + ' · ' + names[S.careFilter] + ' ' + c.shown.length + '명'];
-    var last = null;
-    c.shown.forEach(function(x){
-      if (last !== x.r.id){ lines.push(''); lines.push('[' + x.r.title + ']'); last = x.r.id; }
-      lines.push('- ' + x.m.name + ' (' + x.g.name + ') ' + x.why + (x.m.phone ? ' · ' + x.m.phone : ''));
-    });
-    var text = lines.join('\n');
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); toast('명단을 복사했습니다'); } catch (e) { alert(text); }
-    document.body.removeChild(ta);
   }
 
   var toastTimer = null;
