@@ -210,7 +210,7 @@ button{font-family:inherit; color:inherit;}
 .qbtn:active{background:var(--brand-soft); border-color:var(--brand-line);}
 
 /* 순 카드 */
-:root{ --ckw:54px; --ckw-g:60px; }
+:root{ --ckw:52px; --ckw-g:58px; --cntw:78px; }
 .group{
   background:var(--card); border:1px solid var(--line); border-radius:var(--r-xl);
   box-shadow:var(--sh-1); margin-bottom:13px; overflow:hidden;
@@ -220,8 +220,10 @@ button{font-family:inherit; color:inherit;}
 .gsub{margin-left:auto; font-size:12px; color:var(--muted); font-weight:500; white-space:nowrap;}
 .gsub b{color:var(--brand); font-weight:700;}
 /* 두 체크 칸 바로 위에 같은 너비의 '전체' 버튼을 둔다 */
-.gcols{display:flex; align-items:center; gap:8px; padding:6px 15px 9px; background:var(--card-2); border-bottom:1px solid var(--line-2);}
+.gcols{display:flex; align-items:center; gap:8px; padding:6px 12px 9px 15px; background:var(--card-2); border-bottom:1px solid var(--line-2);}
 .gcols > span{flex:1; font-size:11.5px; color:var(--muted);}
+.gcols .gbtns{flex:0 0 auto; display:flex; gap:6px;}
+.gcols .gcnt{flex:0 0 auto; width:var(--cntw); font-size:10.5px; line-height:1.25; color:var(--muted); text-align:right;}
 .gall{
   flex:0 0 auto; width:var(--ckw); background:var(--card); border:1px solid var(--line);
   border-radius:9px; padding:5px 0; font-size:11px; font-weight:700; color:var(--ink-2); cursor:pointer;
@@ -232,20 +234,12 @@ button{font-family:inherit; color:inherit;}
 .list{list-style:none; margin:0; padding:0;}
 .list li + li{border-top:1px solid var(--line-2);}
 .row{
-  position:relative; display:flex; align-items:center; gap:11px;
-  padding:10px 15px; user-select:none; transition:background .16s;
+  position:relative; display:flex; align-items:center; gap:8px;
+  padding:10px 12px 10px 15px; user-select:none; transition:background .16s;
 }
 .row::before{content:''; position:absolute; left:0; top:0; bottom:0; width:0; background:var(--brand); transition:width .18s;}
 .row.w{background:var(--brand-soft);}
 .row.w::before{width:4px;}
-.ava{
-  flex:0 0 auto; width:38px; height:38px; border-radius:50%;
-  background:var(--card-2); border:1px solid var(--line);
-  display:flex; align-items:center; justify-content:center;
-  font-size:15px; font-weight:700; color:var(--ink-2);
-  transition:background .18s, color .18s, border-color .18s;
-}
-.row.w .ava{background:var(--brand); border-color:var(--brand); color:#fff;}
 .who{flex:1; min-width:0;}
 .who .nm{display:block; font-size:16px; font-weight:500; letter-spacing:-.025em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .row.w .who .nm{font-weight:700;}
@@ -258,7 +252,7 @@ button{font-family:inherit; color:inherit;}
 .who .ph{display:inline-block; font-size:12px; color:var(--muted); text-decoration:none;}
 .who .ph:active{color:var(--brand);}
 
-.cks{flex:0 0 auto; display:flex; gap:8px;}
+.cks{flex:0 0 auto; display:flex; gap:6px;}
 .ck{
   width:var(--ckw); height:46px; border-radius:12px; cursor:pointer;
   border:1.5px solid var(--chk); background:var(--card); color:var(--muted);
@@ -272,6 +266,13 @@ button{font-family:inherit; color:inherit;}
 .ck.on{background:var(--brand); border-color:var(--brand); color:#fff; box-shadow:0 2px 8px var(--brand-ring);}
 .ck.on i{color:#fff;}
 .ck[disabled]{opacity:.3; cursor:default; box-shadow:none;}
+/* 누적 출석: 몇 번 중 몇 번 + 퍼센트 */
+.cnt{flex:0 0 auto; width:var(--cntw); display:flex; flex-direction:column; gap:4px; text-align:right;}
+.cnt span{display:block; white-space:nowrap; font-size:11.5px; font-weight:700; line-height:1.15; letter-spacing:-.02em;}
+.cnt i{font-style:normal; font-size:10px; font-weight:500; color:var(--muted); margin-right:3px;}
+.cnt em{font-style:normal; font-size:10.5px; font-weight:500; margin-left:3px; opacity:.85;}
+.cnt .hi{color:var(--good);} .cnt .md{color:var(--mid);} .cnt .lo{color:var(--low);}
+.cnt .no{color:var(--muted); font-weight:500;}
 
 /* 하단 */
 .footbar{
@@ -339,7 +340,6 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   background:var(--card); border:1px solid var(--line); border-radius:var(--r-xl);
   box-shadow:var(--sh-1); margin-bottom:14px; overflow:hidden;
 }
-#ovMembers{scroll-margin-top:158px;}
 .ov-head{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:4px 10px; padding:16px 18px 2px;}
 .ov-head h2{margin:0; font-size:15.5px; font-weight:700; letter-spacing:-.025em;}
 .ov-head span{font-size:12px; color:var(--muted);}
@@ -378,18 +378,6 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 .rr-bar i{display:block; height:100%; border-radius:99px; background:var(--tile); transition:width .45s cubic-bezier(.4,0,.2,1);}
 .rr-pct{flex:0 0 auto; width:44px; text-align:right; font-size:14px; font-weight:700;}
 
-.ov-tools{padding:12px 14px 8px;}
-.fchips{position:relative; display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding-bottom:10px;}
-.fchips::-webkit-scrollbar{display:none;}
-.fchip{
-  flex:0 0 auto; display:inline-flex; align-items:center; gap:6px;
-  border:1.5px solid var(--line); background:var(--card-2); border-radius:99px;
-  padding:7px 12px; font-size:13px; font-weight:500; cursor:pointer; white-space:nowrap;
-  transition:background .15s, border-color .15s, color .15s;
-}
-.fchip i{width:8px; height:8px; border-radius:50%; background:var(--tile);}
-.fchip.on{background:var(--brand); border-color:var(--brand); color:#fff; font-weight:700;}
-.fchip.on i{background:#fff;}
 .seg{display:flex; background:var(--card-2); border:1px solid var(--line); border-radius:12px; padding:3px;}
 .seg button{
   flex:1; border:0; background:transparent; border-radius:9px; padding:8px 6px;
@@ -398,37 +386,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 .seg button.on{background:var(--brand); color:#fff; font-weight:700; box-shadow:0 2px 8px var(--brand-ring);}
 .ov-metric{margin-bottom:14px; background:var(--card); border-color:var(--line); box-shadow:var(--sh-1); padding:4px; border-radius:14px;}
 .ov-metric button{padding:11px 6px; font-size:14px;}
-.ov-legend{display:flex; gap:13px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); padding:11px 2px 0;}
-.ov-legend span{display:inline-flex; align-items:center; gap:5px;}
-
-.olist{padding-bottom:4px;}
-.o-region{
-  display:flex; align-items:center; gap:9px; padding:16px 16px 9px;
-  font-size:14.5px; font-weight:700; letter-spacing:-.02em;
-}
-.o-region .rbadge{width:26px; height:26px; border-radius:8px; font-size:12px;}
-.o-region span{font-size:12px; color:var(--muted); font-weight:500; margin-left:auto;}
-.o-group{
-  padding:7px 16px; font-size:12px; font-weight:700; color:var(--ink-2);
-  background:var(--card-2); border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
-}
-.o-group em{font-style:normal; font-weight:500; color:var(--muted); margin-left:4px;}
-.orow{display:flex; align-items:center; gap:12px; padding:10px 16px;}
-.orow + .orow{border-top:1px solid var(--line-2);}
-.omain{flex:1; min-width:0;}
-.oname{font-size:15px; font-weight:500; letter-spacing:-.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.ometa{font-size:11.5px; color:var(--muted); margin-left:6px; font-weight:400;}
-.dots{display:flex; flex-wrap:wrap; gap:3px; margin-top:6px;}
-.dot{display:inline-block; width:11px; height:11px; border-radius:3px; background:var(--dot-off);}
-.dot.on{background:var(--good);}
-.dot.na{background:transparent; border:1px dashed var(--chk);}
-.orate{flex:0 0 auto; min-width:60px; text-align:center; border-radius:12px; padding:6px 8px;}
-.orate b{display:block; font-size:15.5px; font-weight:700; line-height:1.15;}
-.orate small{display:block; font-size:10.5px; margin-top:1px; opacity:.85;}
-.orate.hi{background:var(--good-soft); color:var(--good);}
-.orate.md{background:var(--mid-soft); color:var(--mid);}
-.orate.lo{background:var(--low-soft); color:var(--low);}
-.orate.no{background:var(--card-2); color:var(--muted);}
+.rr-pct.hi{color:var(--good);} .rr-pct.md{color:var(--mid);} .rr-pct.lo{color:var(--low);} .rr-pct.no{color:var(--muted);}
 .ov-note{font-size:11.5px; color:var(--muted); padding:2px 6px 20px; line-height:1.65; margin:0;}
 
 .hidden{display:none !important;}
@@ -560,29 +518,11 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     </div>
 
     <div class="ov-card">
-      <div class="ov-head"><h2>지역별 출석률</h2><span>누르면 그 지역 명단으로</span></div>
+      <div class="ov-head"><h2>지역별 출석률</h2><span>누르면 그 지역 출석부로</span></div>
       <div class="rlist" id="ovRegions"></div>
     </div>
 
-    <div class="ov-card" id="ovMembers">
-      <div class="ov-head"><h2>순원별 출결</h2><span id="ovCount"></span></div>
-      <div class="ov-tools">
-        <div class="fchips" id="ovChips"></div>
-        <div class="seg">
-          <button id="segRoster" class="on" onclick="setOvSort('roster')">명단 순서</button>
-          <button id="segLow" onclick="setOvSort('low')">출석 낮은 순</button>
-        </div>
-        <div class="ov-legend">
-          <span><i class="dot on"></i>출석</span>
-          <span><i class="dot"></i>결석</span>
-          <span><i class="dot na"></i>미기록</span>
-          <span id="ovLegendTip">칸 하나가 주일 하루, 오른쪽이 최근</span>
-        </div>
-      </div>
-      <div class="olist" id="ovList"></div>
-    </div>
-
-    <p class="ov-note">지역장 행은 순 안의 같은 이름과 겹치므로 집계에서 뺐습니다. 그 지역에 체크가 하나도 없는 주일은 아직 기록하지 않은 것으로 보고 ‘미기록’으로 표시하며 출석률 계산에서 제외합니다.</p>
+    <p class="ov-note">지역장 행은 순 안의 같은 이름과 겹치므로 집계에서 뺐습니다. 그 지역에 체크가 하나도 없는 주는 아직 기록하지 않은 것으로 보고 출석률 계산에서 제외합니다. 순원 한 사람씩의 출석 횟수는 각 지역 출석부에서 이름 옆에 나옵니다.</p>
   </section>
 
   <div id="loading" class="skel"><div class="spin"></div>불러오는 중입니다…</div>
@@ -608,7 +548,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
   var state = {
     regions: [], region: null, data: null, dateIndex: 0,
     code: '', pending: {}, timer: null, sending: false, panel: null,
-    mode: 'region', ov: null, ovFilter: 'all', ovSort: 'roster', ovMetric: 'w', adminCode: ''
+    mode: 'region', ov: null, ovMetric: 'w', adminCode: ''
   };
 
   /* ---------------- 색상 ---------------- */
@@ -712,14 +652,7 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
         (r.leader ? esc(r.leader) : '지역장 미지정') + '</span></span>';
       b.onclick = function(){
         if (picked){ setPanel(null); return; }
-        if (Object.keys(state.pending).length) flush(true);
-        state.mode = 'region';
-        state.region = r;
-        state.code = '';
-        setBrand(color);
-        renderRegions();
-        setPanel(null);
-        openRegion();
+        selectRegion(r, i);
       };
       box.appendChild(b);
     });
@@ -740,6 +673,18 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       openOverview();
     };
     box.appendChild(ov);
+  }
+
+  function selectRegion(r, i){
+    if (Object.keys(state.pending).length) flush(true);
+    state.mode = 'region';
+    state.region = r;
+    state.code = '';
+    setBrand(colorFor(r, i));
+    renderRegions();
+    setPanel(null);
+    window.scrollTo(0, 0);
+    openRegion();
   }
 
   function openRegion(){
@@ -905,14 +850,21 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       var cols = document.createElement('div');
       cols.className = 'gcols';
       cols.innerHTML = '<span>' + g.members.length + '명 · 이 순 한꺼번에</span>';
+      var btns = document.createElement('div');
+      btns.className = 'gbtns';
       [['w', '예배 전체', hasW], ['g', '순모임 전체', hasG]].forEach(function(t){
         var b = document.createElement('button');
         b.className = 'gall ' + t[0];
         b.textContent = t[1];
         b.disabled = !t[2];
         b.onclick = function(){ toggleGroup(gi, t[0]); };
-        cols.appendChild(b);
+        btns.appendChild(b);
       });
+      cols.appendChild(btns);
+      var ch = document.createElement('span');
+      ch.className = 'gcnt';
+      ch.innerHTML = '누적 출석<br>(몇 번 중 몇 번)';
+      cols.appendChild(ch);
       sec.appendChild(cols);
 
       var ul = document.createElement('ul');
@@ -927,14 +879,14 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
           : '<span class="ph">연락처 없음</span>';
         var tag = (m.lead && g.name !== '지역장') ? '<span class="tag">순장</span>' : '';
         row.innerHTML =
-          '<span class="ava">' + esc(m.name.charAt(0)) + '</span>' +
           '<span class="who"><span class="nm">' + esc(m.name) + tag + '</span>' + ph + '</span>' +
           '<span class="cks">' +
             '<button class="ck w' + (m.marks[di] ? ' on' : '') + '" id="cw' + gi + '_' + mi + '"' +
               (hasW ? '' : ' disabled') + '><i>✓</i>예배</button>' +
             '<button class="ck g' + (m.gmarks[di] ? ' on' : '') + '" id="cg' + gi + '_' + mi + '"' +
               (hasG ? '' : ' disabled') + '><i>✓</i>순모임</button>' +
-          '</span>';
+          '</span>' +
+          '<span class="cnt" id="cn' + gi + '_' + mi + '"></span>';
         row.querySelector('.ck.w').onclick = function(){ toggleOne(gi, mi, 'w'); };
         row.querySelector('.ck.g').onclick = function(){ toggleOne(gi, mi, 'g'); };
         li.appendChild(row);
@@ -944,6 +896,41 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
       box.appendChild(sec);
     });
     updateSummary();
+  }
+
+  // 오늘까지 지난 주 가운데 이 지역에서 한 명이라도 체크한 주만 센다(아직 안 적은 주는 빼기)
+  function recordedWeeks(kind){
+    return state.data.dates.map(function(d, i){
+      var col = kind === 'g' ? d.gcol : d.col;
+      if (!d.past || !col) return false;
+      return state.data.groups.some(function(g){
+        return g.members.some(function(m){ return marksOf(m, kind)[i]; });
+      });
+    });
+  }
+
+  function tallyText(label, att, total){
+    if (!total) return '<span class="no"><i>' + label + '</i>—</span>';
+    var rate = att / total;
+    var lv = rate >= .75 ? 'hi' : rate >= .5 ? 'md' : 'lo';
+    return '<span class="' + lv + '"><i>' + label + '</i>' + att + '/' + total +
+      '<em>' + Math.round(rate * 100) + '%</em></span>';
+  }
+
+  function updateCounts(){
+    var recW = recordedWeeks('w'), recG = recordedWeeks('g');
+    var nW = recW.filter(Boolean).length, nG = recG.filter(Boolean).length;
+    var hasAnyG = state.data.hasGroup;
+    state.data.groups.forEach(function(g, gi){
+      g.members.forEach(function(m, mi){
+        var el = document.getElementById('cn' + gi + '_' + mi);
+        if (!el) return;
+        var aw = 0, ag = 0;
+        recW.forEach(function(on, i){ if (on && m.marks[i]) aw++; });
+        recG.forEach(function(on, i){ if (on && m.gmarks[i]) ag++; });
+        el.innerHTML = tallyText('예배', aw, nW) + (hasAnyG ? tallyText('순모임', ag, nG) : '');
+      });
+    });
   }
 
   function setRing(id, pct){
@@ -971,6 +958,8 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
     setRing('ringG', hasG ? pg : 0);
     document.getElementById('sumG').classList.toggle('off', !hasG);
     document.getElementById('qbtnG').disabled = !hasG;
+
+    updateCounts();
 
     var d = state.data.dates[di];
     document.getElementById('sumCap').textContent = d.label + ' 주일 · 순모임은 그 주에 모인 것';
@@ -1100,8 +1089,6 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
         if (!anyG) state.ovMetric = 'w';
         document.getElementById('metW').classList.toggle('on', state.ovMetric === 'w');
         document.getElementById('metG').classList.toggle('on', state.ovMetric === 'g');
-        var known = ov.regions.some(function(r){ return r.id === state.ovFilter; });
-        if (!known) state.ovFilter = 'all';
 
         document.getElementById('mark').textContent = '현황';
         document.getElementById('title').textContent = ov.title + ' 출석 현황';
@@ -1180,8 +1167,6 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
 
     var isG = state.ovMetric === 'g';
     document.getElementById('ovTitle').textContent = ov.title + ' 전체 · ' + (isG ? '순모임' : '주일예배');
-    document.getElementById('ovLegendTip').textContent =
-      isG ? '칸 하나가 한 주의 순모임, 오른쪽이 최근' : '칸 하나가 주일 하루, 오른쪽이 최근';
     document.getElementById('ovAt').textContent = ov.at + ' 기준';
     document.getElementById('ovStats').innerHTML =
       '<div class="stat main"><small>평균 출석률</small><b>' + pct(tot.rec ? tot.att / tot.rec : null) + '</b></div>' +
@@ -1218,122 +1203,18 @@ input[type=tel]:focus{outline:none; border-color:var(--brand); background:var(--
         '<span class="rr-main"><span class="rr-top"><b>' + esc(r.title) + '</b><span>' +
         (r.leader ? esc(r.leader) + ' · ' : '') + s.n + '명</span></span>' +
         '<span class="rr-bar"><i style="width:' + (s.rate == null ? 0 : Math.round(s.rate * 100)) + '%"></i></span></span>' +
-        '<span class="rr-pct">' + pct(s.rate) + '</span>';
+        '<span class="rr-pct ' + level(s.rate) + '">' + pct(s.rate) + '</span>';
       b.onclick = function(){
-        state.ovFilter = r.id;
-        renderOvChips();
-        renderOvList();
-        document.getElementById('ovMembers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var idx = -1;
+        state.regions.forEach(function(x, k){ if (x.id === r.id) idx = k; });
+        if (idx >= 0) selectRegion(state.regions[idx], idx);
       };
       rl.appendChild(b);
     });
 
-    renderOvChips();
-    setOvSort(state.ovSort);
     if (!Object.keys(state.pending).length && !state.sending){
       setStatus('누적 ' + ov.dates.length + '주 · 순원 ' + tot.n + '명 · ' + ov.at + ' 기준');
     }
-  }
-
-  function renderOvChips(){
-    var box = document.getElementById('ovChips');
-    box.innerHTML = '';
-    function chip(id, label, color){
-      var b = document.createElement('button');
-      b.className = 'fchip' + (state.ovFilter === id ? ' on' : '');
-      if (color){
-        b.style.setProperty('--tile', color);
-        b.innerHTML = '<i></i>' + esc(label);
-      } else {
-        b.textContent = label;
-      }
-      b.onclick = function(){
-        state.ovFilter = id;
-        renderOvChips();
-        renderOvList();
-      };
-      box.appendChild(b);
-    }
-    chip('all', '전체');
-    state.ov.regions.forEach(function(r, i){ chip(r.id, regionNo(r, i) + '지역', colorFor(r, i)); });
-
-    var on = box.querySelector('.fchip.on');
-    if (on) box.scrollLeft = Math.max(0, on.offsetLeft - 14);
-  }
-
-  function setOvSort(v){
-    state.ovSort = v;
-    document.getElementById('segRoster').classList.toggle('on', v === 'roster');
-    document.getElementById('segLow').classList.toggle('on', v === 'low');
-    renderOvList();
-  }
-
-  function ovRow(r, ri, g, m, s, withWhere){
-    var dates = state.ov.dates;
-    var rec = ovRec(r);
-    var dots = ovMarks(m).map(function(v, j){
-      var cls = (!rec[j] || v == null) ? 'na' : (v === 1 ? 'on' : '');
-      return '<i class="dot ' + cls + '" title="' + esc(dates[j].label) + '"></i>';
-    }).join('');
-    var other = '';
-    if (state.ovMetric === 'g') other = '예배 ' + pct(statOf(r, m, 'w').rate);
-    else if (r.hasGroup) other = '순모임 ' + pct(statOf(r, m, 'g').rate);
-    var where = [withWhere ? regionNo(r, ri) + '지역 · ' + g.name : '', other]
-      .filter(Boolean).join(' · ');
-    return '<div class="orow"><div class="omain"><div class="oname">' + esc(m.name) +
-      (m.lead ? '<span class="tag">순장</span>' : '') +
-      (where ? '<span class="ometa">' + esc(where) + '</span>' : '') + '</div>' +
-      (dates.length ? '<div class="dots">' + dots + '</div>' : '') + '</div>' +
-      '<div class="orate ' + level(s.rate) + '"><b>' + pct(s.rate) + '</b><small>' +
-      s.att + '/' + s.rec + '회</small></div></div>';
-  }
-
-  function renderOvList(){
-    var ov = state.ov;
-    var html = [];
-    var count = 0;
-    var picked = [];
-    ov.regions.forEach(function(r, ri){
-      if (state.ovFilter === 'all' || r.id === state.ovFilter) picked.push({ r: r, ri: ri });
-    });
-
-    if (state.ovSort === 'low'){
-      var rows = [];
-      picked.forEach(function(p){
-        p.r.groups.forEach(function(g){
-          g.members.forEach(function(m){ rows.push({ p: p, g: g, m: m, s: statOf(p.r, m) }); });
-        });
-      });
-      rows.sort(function(a, b){
-        var ar = a.s.rate == null ? 2 : a.s.rate;
-        var br = b.s.rate == null ? 2 : b.s.rate;
-        if (ar !== br) return ar - br;
-        if (a.s.rec !== b.s.rec) return b.s.rec - a.s.rec;
-        return a.m.name.localeCompare(b.m.name, 'ko');
-      });
-      rows.forEach(function(x){ html.push(ovRow(x.p.r, x.p.ri, x.g, x.m, x.s, true)); });
-      count = rows.length;
-    } else {
-      picked.forEach(function(p){
-        if (state.ovFilter === 'all'){
-          var rs = regionStat(p.r);
-          html.push('<div class="o-region"><span class="rbadge" style="--tile:' + colorFor(p.r, p.ri) + '">' +
-            esc(regionNo(p.r, p.ri)) + '</span>' + esc(p.r.title) +
-            '<span>' + (p.r.leader ? '지역장 ' + esc(p.r.leader) + ' · ' : '') + pct(rs.rate) + '</span></div>');
-        }
-        p.r.groups.forEach(function(g){
-          html.push('<div class="o-group">' + esc(g.name) + '<em>' + g.members.length + '명</em></div>');
-          g.members.forEach(function(m){
-            html.push(ovRow(p.r, p.ri, g, m, statOf(p.r, m), false));
-            count++;
-          });
-        });
-      });
-    }
-
-    document.getElementById('ovCount').textContent = count + '명';
-    document.getElementById('ovList').innerHTML =
-      html.join('') || '<div class="skel">표시할 순원이 없습니다</div>';
   }
 
   function retryNow(){

@@ -406,6 +406,12 @@ function getRegionData(id, code) {
   const data = parseSheet_(sheetByRegionId_(id));
   data.defaultDateIndex = defaultDateIndex_(data.dates);
   data.mark = CONFIG.MARK;
+
+  // 오늘까지 지난 주인지 표시한다(순원별 누적 출석 횟수 계산용)
+  const now = new Date();
+  const todayKey = Number(Utilities.formatDate(now, ss_().getSpreadsheetTimeZone(), 'yyyyMMdd'));
+  const keys = dateKeys_(data.dates, now);
+  data.dates.forEach(function (d, i) { d.past = keys[i] <= todayKey; });
   return data;
 }
 
