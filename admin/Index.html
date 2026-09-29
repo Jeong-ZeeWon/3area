@@ -65,8 +65,8 @@ button{font-family:inherit; color:inherit;}
 
 /* 요약 카드 */
 .cards{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px;}
-.cards .kpi:nth-child(3){grid-column:1 / -1;}
-@media (min-width:760px){ .cards{grid-template-columns:repeat(3,1fr);} .cards .kpi:nth-child(3){grid-column:auto;} }
+@media (min-width:760px){ .cards{grid-template-columns:repeat(4,1fr);} }
+.kpi.lead{border-color:rgba(194,122,38,.45); background:linear-gradient(180deg, rgba(194,122,38,.07), var(--card) 60%);}
 .kpi{background:var(--card); border:1px solid var(--line); border-radius:var(--r-md); box-shadow:var(--sh-1); padding:13px 14px 12px; min-width:0;}
 .kpi small{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-2); font-weight:700;}
 .kpi small i{width:8px; height:8px; border-radius:50%; display:inline-block;}
@@ -130,8 +130,7 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   .card, .kpi{box-shadow:none; break-inside:avoid;}
   .hm-wrap{overflow:visible;}
   .hm th.rh{position:static;}
-  .cards{grid-template-columns:repeat(3,1fr);}
-  .cards .kpi:nth-child(3){grid-column:auto;}
+  .cards{grid-template-columns:repeat(4,1fr);}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
 }
 </style>
@@ -275,6 +274,21 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     return { att: att, base: base, done: done, total: total, rate: base ? att / base : null };
   }
 
+  // 순원 가운데 한 명이라도 순모임에 체크되어 있으면 그 순은 모임을 한 것으로 센다.
+  // 순모임 칸이 없는 지역의 순은 셈에서 뺀다.
+  function cellMeetings(j){
+    var did = 0, total = 0;
+    S.data.regions.forEach(function(r){
+      if (!r.hasGroup) return;
+      r.groups.forEach(function(g){
+        total++;
+        var on = g.members.some(function(m){ return marksOf(m, 'g').charAt(j) === '1'; });
+        if (on) did++;
+      });
+    });
+    return { did: did, total: total };
+  }
+
   function pct(x){ return x == null ? '—' : Math.round(x * 100) + '%'; }
   function heatColor(kind, rate){
     var pal = HEAT[kind];
@@ -352,7 +366,11 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   function renderCards(){
     var j = S.week;
     var w = weekStats('w', j), g = weekStats('g', j);
+    var cm = cellMeetings(j);
     document.getElementById('cards').innerHTML =
+      '<div class="kpi lead"><small><i style="background:var(--g)"></i>순모임 한 순</small>' +
+        '<b>' + cm.did + '<em>순 / ' + cm.total + '순</em></b>' +
+        '<p>순원 한 명이라도 체크되면 모임한 것으로 셈</p></div>' +
       '<div class="kpi"><small><i style="background:var(--w)"></i>주일예배 출석</small>' +
         '<b>' + (w.done ? w.att : '—') + '<em>명 · ' + pct(w.rate) + '</em></b><p>' + delta('w', j) + '</p></div>' +
       '<div class="kpi"><small><i style="background:var(--g)"></i>순모임 참석</small>' +
