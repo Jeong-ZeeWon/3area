@@ -164,13 +164,13 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     </section>
 
     <section class="card">
-      <div class="head"><h2><i style="background:var(--w)"></i>지역별 주일예배 출석률</h2><span>지역을 누르면 순별로 펼쳐집니다</span></div>
+      <div class="head"><h2><i style="background:var(--w)"></i>지역별 주일예배 출석</h2><span>칸은 출석 인원, 마지막 칸은 평균 · 지역을 누르면 순별로 펼쳐집니다</span></div>
       <div class="hm-wrap" id="heatW"></div>
       <div class="scale" id="scaleW"></div>
     </section>
 
     <section class="card">
-      <div class="head"><h2><i style="background:var(--g)"></i>지역별 순모임 출석률</h2><span>지역을 누르면 순별로 펼쳐집니다</span></div>
+      <div class="head"><h2><i style="background:var(--g)"></i>지역별 순모임 참석</h2><span>칸은 참석 인원, 마지막 칸은 평균 · 지역을 누르면 순별로 펼쳐집니다</span></div>
       <div class="hm-wrap" id="heatG"></div>
       <div class="scale" id="scaleG"></div>
     </section>
@@ -437,24 +437,28 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
 
   function renderHeat(kind, heatId, scaleId){
     var n = S.data.weeks.length;
+    // 각 날짜 칸에는 출석 인원을 적고(칸 색은 출석률), 마지막 칸에만 주 평균 인원을 적는다
     function cells(r, members){
-      var html = '', att = 0, base = 0;
+      var html = '', att = 0, base = 0, weeks = 0;
       for (var j = 0; j < n; j++){
         var t = tally(r, members, kind, j);
         var sel = j === S.week ? ' sel' : '';
         if (!t){ html += '<td class="c na' + sel + '">·</td>'; continue; }
-        att += t.att; base += t.base;
+        att += t.att; base += t.base; weeks++;
         var c = heatColor(kind, t.rate);
         html += '<td class="c' + sel + '" style="background:' + c.bg + ';color:' + c.fg + '" title="' +
-          t.att + '/' + t.base + '명">' + Math.round(t.rate * 100) + '</td>';
+          t.att + '/' + t.base + '명 · ' + Math.round(t.rate * 100) + '%">' + t.att + '</td>';
       }
-      var avg = base ? att / base : null;
-      html += '<td class="avg" style="color:' + (avg == null ? 'var(--muted)' : avg >= .75 ? 'var(--good)' : avg >= .5 ? 'var(--mid)' : 'var(--low)') + '">' + pct(avg) + '</td>';
+      var avg = base ? att / base : null;                    // 기록된 주의 평균 출석률
+      var avgCount = weeks ? Math.round(att / weeks) : null;  // 기록된 주의 평균 인원
+      html += '<td class="avg" title="' + (avg == null ? '기록 없음' : '평균 출석률 ' + pct(avg)) + '" style="color:' +
+        (avg == null ? 'var(--muted)' : avg >= .75 ? 'var(--good)' : avg >= .5 ? 'var(--mid)' : 'var(--low)') + '">' +
+        (avgCount == null ? '—' : avgCount + '명') + '</td>';
       return html;
     }
     var head = '<tr><th class="rh">지역 / 순</th>' + S.data.weeks.map(function(w, j){
       return '<th class="' + (j === S.week ? 'sel' : '') + '">' + w.month + '/' + w.day + '</th>';
-    }).join('') + '<th>평균</th></tr>';
+    }).join('') + '<th>평균</th></tr>';   // 마지막 칸만 평균(주 평균 인원)
 
     var body = '';
     S.data.regions.forEach(function(r, i){
@@ -467,12 +471,14 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
       var open = !!S.open[kind + ':' + r.id];
       body += '<tr class="rr" onclick="toggleRegion(\'' + kind + '\', \'' + esc(r.id).replace(/'/g, "\\'") + '\')">' +
         '<th class="rh"><span class="bd" style="background:' + regionColor(r, i) + '">' + esc(regionNo(r, i)) + '</span>' +
-        esc(regionNo(r, i)) + '지역<small>' + esc(r.leader) + '</small><span class="arr">' + (open ? '▼' : '▶') + '</span></th>' +
+        esc(regionNo(r, i)) + '지역<small>' + esc(r.leader) + ' · ' + allMembers(r).length + '명</small>' +
+        '<span class="arr">' + (open ? '▼' : '▶') + '</span></th>' +
         cells(r, allMembers(r)) + '</tr>';
       if (open){
         r.groups.forEach(function(g){
           var ld = leadOf(g);
-          body += '<tr class="sub"><th class="rh">' + esc(g.name) + '<small>' + (ld ? '순장 ' + esc(ld) : g.members.length + '명') + '</small></th>' +
+          body += '<tr class="sub"><th class="rh">' + esc(g.name) + '<small>' +
+            (ld ? '순장 ' + esc(ld) + ' · ' : '') + g.members.length + '명</small></th>' +
             cells(r, g.members) + '</tr>';
         });
       }
@@ -482,7 +488,7 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     // 휴대폰에서도 선택한 주가 바로 보이도록 표를 옆으로 넘겨 둔다
     var selTh = wrap.querySelector('thead th.sel');
     if (selTh) wrap.scrollLeft = Math.max(0, selTh.offsetLeft - wrap.clientWidth + selTh.offsetWidth + 60);
-    document.getElementById(scaleId).innerHTML = '출석률 ' +
+    document.getElementById(scaleId).innerHTML = '칸 색은 출석률 ' +
       HEAT[kind].map(function(c){ return '<i style="background:' + c + '"></i>'; }).join('') +
       ' <span>0 → 100%</span> · <i style="background:repeating-linear-gradient(45deg,#f3efe8,#f3efe8 4px,#faf8f5 4px,#faf8f5 8px)"></i> 아직 기록 안 한 주';
   }
