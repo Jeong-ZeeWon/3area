@@ -580,11 +580,11 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
     return weeks ? Math.round(att / weeks) : null;
   }
   function rpTable(head, rows, cls){
-    return '<div class="rp-tw"><table class="rp' + (cls ? ' ' + cls : '') + '">' +
+    return '<div class="rp-tw">' + (cls ? '<table class="rp ' + cls + '">' : '<table class="rp">') +
       (head ? '<thead><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr></thead>' : '') +
       '<tbody>' + rows.join('') + '</tbody></table></div>';
   }
-  function td(html, cls){ return '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + html + '</td>'; }
+  function td(html, cls){ return (cls ? '<td class="' + cls + '">' : '<td>') + html + '</td>'; }
 
   function renderReport(){
     var j = S.week, wk = S.data.weeks[j];
@@ -630,7 +630,7 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
     rows = [];
     for (var k = Math.max(0, j - TREND + 1); k <= j; k++){
       var a = weekStats('w', k), b = weekStats('g', k), c = cellMeetings(k);
-      rows.push('<tr' + (k === j ? ' class="tot"' : '') + '>' + td(S.data.weeks[k].month + '월 ' + S.data.weeks[k].day + '일') +
+      rows.push((k === j ? '<tr class="tot">' : '<tr>') + td(S.data.weeks[k].month + '월 ' + S.data.weeks[k].day + '일') +
         td(a.done ? a.att + '명<small>' + pct(a.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(a.rate)) +
         td(b.done ? b.att + '명<small>' + pct(b.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(b.rate)) +
         td(c.total ? c.did + ' / ' + c.total : '—') + td(a.done + ' / ' + a.total) + '</tr>');
