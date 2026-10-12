@@ -632,6 +632,10 @@ function onOpen() {
       .createMenu('출석 체크 앱')
       .addItem('지역장 배부 링크 만들기', 'makeRegionLinks')
       .addItem('출석부 구조 점검', 'checkStructure')
+      .addSeparator()
+      .addItem('주간 리포트 지금 만들기', 'makeWeeklyReport')
+      .addItem('주간 리포트 매주 자동 만들기', 'installWeeklyReport')
+      .addItem('주간 리포트 자동 만들기 해제', 'removeWeeklyReport')
       .addToUi();
   } catch (err) {
     // 독립 프로젝트에는 메뉴를 붙일 수 없습니다. 편집기에서 함수를 직접 실행하세요.
