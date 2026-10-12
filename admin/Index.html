@@ -155,6 +155,24 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
 .rp-list a{color:var(--brand-2); text-decoration:none;}
 .rp-foot{font-size:11.5px; color:var(--muted); line-height:1.7; margin:24px 0 0; padding-top:12px; border-top:1px solid var(--line);}
 
+/* ---------- 한 장 요약 ---------- */
+.one{max-width:820px; padding:32px 36px 28px;}
+.one .rp-hd h1{font-size:21px;}
+.one h2{font-size:14px; margin:18px 0 6px;}
+.ob-row{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px;}
+@media (max-width:600px){ .ob-row{grid-template-columns:repeat(2,1fr);} }
+.ob{border:1px solid var(--line); border-radius:8px; padding:9px 11px; min-width:0;}
+.ob small{display:block; font-size:11.5px; color:var(--ink-2); font-weight:700;}
+.ob b{display:block; font-size:21px; letter-spacing:-.03em; line-height:1.25; margin-top:2px;}
+.ob b em{font-style:normal; font-size:12px; color:var(--muted); font-weight:500; margin-left:2px;}
+.ob p{margin:2px 0 0; font-size:11px; color:var(--muted);}
+.ob.good b{color:var(--good);} .ob.mid b{color:var(--mid);} .ob.low b{color:var(--low);}
+.one table.rp{font-size:12px;}
+.one table.rp th, .one table.rp td{padding:4px 6px;}
+.one-chk{font-size:12px; margin:0; padding-left:16px; color:var(--ink-2);}
+.one-chk li{margin:2px 0;}
+.one .rp-foot{margin-top:14px; padding-top:8px; font-size:10.5px;}
+
 /* ---------- 인쇄 ---------- */
 @media print{
   body{background:#fff; font-size:12px;}
@@ -166,7 +184,10 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
   .hm th.rh{position:static;}
   .cards{grid-template-columns:repeat(4,1fr);}
   .paper{box-shadow:none; border:0; padding:0; max-width:none; margin:0;}
-  body.rep .top{display:none;}
+  body.rep .top, body.one .top{display:none;}
+  body.one{font-size:11px;}
+  .one .ob-row{grid-template-columns:repeat(4,1fr);}
+  @page{size:A4; margin:12mm;}
   .rp-tw{overflow:visible;}
   .paper table{break-inside:avoid;}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
@@ -188,6 +209,7 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
     <div class="views">
       <button class="vw on" id="vDash" onclick="setView('dash')">현황</button>
       <button class="vw" id="vRep" onclick="setView('rep')">주간 리포트</button>
+      <button class="vw" id="vOne" onclick="setView('one')">한 장 요약</button>
     </div>
     <div class="weeks" id="weeks"></div>
   </div>
@@ -221,6 +243,7 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
   </div>
 
   <article id="report" class="paper hidden"></article>
+  <article id="onepage" class="paper one hidden"></article>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -235,7 +258,7 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
   };
 
   var S = { data: null, week: 0, open: {}, rec: {}, view: 'dash' };
-  try { if (localStorage.getItem('adminView') === 'rep') S.view = 'rep'; } catch (e) {}
+  try { var sv = localStorage.getItem('adminView'); if (sv === 'rep' || sv === 'one') S.view = sv; } catch (e) {}
 
   /* ---------------- 불러오기 ---------------- */
   function load(force){
@@ -364,19 +387,23 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
 
   /* ---------------- 그리기 ---------------- */
   function render(){
-    var rep = S.view === 'rep' && S.data.weeks.length > 0;
-    document.getElementById('vDash').classList.toggle('on', !rep);
-    document.getElementById('vRep').classList.toggle('on', rep);
-    document.body.classList.toggle('rep', rep);
-    document.getElementById('body').classList.toggle('hidden', rep);
-    document.getElementById('report').classList.toggle('hidden', !rep);
+    var v = S.data.weeks.length ? S.view : 'dash';
+    document.getElementById('vDash').classList.toggle('on', v === 'dash');
+    document.getElementById('vRep').classList.toggle('on', v === 'rep');
+    document.getElementById('vOne').classList.toggle('on', v === 'one');
+    document.body.classList.toggle('rep', v === 'rep');
+    document.body.classList.toggle('one', v === 'one');
+    document.getElementById('body').classList.toggle('hidden', v !== 'dash');
+    document.getElementById('report').classList.toggle('hidden', v !== 'rep');
+    document.getElementById('onepage').classList.toggle('hidden', v !== 'one');
     if (!S.data.weeks.length){
       document.getElementById('body').innerHTML =
         '<div class="card"><div class="empty">아직 지난 주일이 없습니다. 첫 주일이 지나면 현황이 나타납니다.</div></div>';
       return;
     }
     renderWeeks();
-    if (rep){ renderReport(); return; }
+    if (v === 'rep'){ renderReport(); return; }
+    if (v === 'one'){ renderOnePage(); return; }
     renderCards(); renderChecks();
     renderHeat('w', 'heatW', 'scaleW');
     renderHeat('g', 'heatG', 'scaleG');
@@ -663,6 +690,80 @@ table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
       '순모임은 순원 한 명이라도 체크되면 그 순이 모인 것으로 셉니다. 위쪽 [인쇄]를 누르면 이 리포트만 인쇄하거나 PDF로 저장할 수 있습니다.</p>';
 
     document.getElementById('report').innerHTML = h;
+  }
+
+  /* ---------------- 한 장 요약 (A4 한 쪽) ---------------- */
+  function renderOnePage(){
+    var j = S.week, wk = S.data.weeks[j];
+    var w = weekStats('w', j), g = weekStats('g', j), cm = cellMeetings(j);
+    var h = '';
+
+    h += '<header class="rp-hd"><small>' + esc(S.data.title) + ' 주간 출석 요약</small>' +
+      '<h1>' + wk.month + '월 ' + wk.day + '일 주일</h1>' +
+      '<p>' + esc(S.data.at) + ' 기준 · ' + S.data.regions.length + '개 지역</p></header>';
+
+    var box = function(label, value, unit, note, cls){
+      return '<div class="ob ' + (cls || '') + '"><small>' + label + '</small><b>' + value +
+        '<em>' + unit + '</em></b><p>' + note + '</p></div>';
+    };
+    h += '<div class="ob-row">' +
+      box('순모임 한 순', cm.total ? cm.did : '—', cm.total ? '순 / ' + cm.total + '순' : '',
+        cm.total ? pct(cm.did / cm.total) : '순모임 칸 없음', cm.total ? rateCls(cm.did / cm.total) : '') +
+      box('주일예배 출석', w.done ? w.att : '—', w.done ? '명 · ' + pct(w.rate) : '', delta('w', j), rateCls(w.rate)) +
+      box('순모임 참석', g.done ? g.att : '—', g.done ? '명 · ' + pct(g.rate) : '', delta('g', j), rateCls(g.rate)) +
+      box('기록 완료', w.done, '/ ' + w.total + ' 지역', '순모임 ' + g.done + ' / ' + g.total + ' 지역',
+        (w.done < w.total || g.done < g.total) ? 'low' : '') +
+      '</div>';
+
+    // 지역별
+    var rows = [], people = 0;
+    S.data.regions.forEach(function(r, i){
+      var all = allMembers(r);
+      people += all.length;
+      var tw = tally(r, all, 'w', j), tg = tally(r, all, 'g', j);
+      var met = r.groups.filter(function(gr){ return groupMet(gr, j); }).length;
+      rows.push('<tr>' + td(esc(regionNo(r, i)) + '지역') + td(esc(r.leader || '미지정')) + td(all.length + '명') +
+        td(cntText(tw) + arrow(tw, tally(r, all, 'w', j - 1)), tw ? rateCls(tw.rate) : '') +
+        (r.hasGroup ? td(cntText(tg) + arrow(tg, tally(r, all, 'g', j - 1)), tg ? rateCls(tg.rate) : '') : td('칸 없음', 'na')) +
+        td(!r.hasGroup ? '—' : S.rec[r.id].g[j] ? met + ' / ' + r.groups.length : '<span class="na">미기록</span>') + '</tr>');
+    });
+    rows.push('<tr class="tot">' + td('합계') + td('') + td(people + '명') +
+      td(w.done ? w.att + '명<small>' + pct(w.rate) + '</small>' : '미기록') +
+      td(g.done ? g.att + '명<small>' + pct(g.rate) + '</small>' : '미기록') +
+      td(cm.total ? cm.did + ' / ' + cm.total : '—') + '</tr>');
+    h += '<h2>지역별 현황</h2>' + rpTable(['지역', '지역장', '인원', '주일예배', '순모임', '모인 순'], rows);
+
+    // 최근 흐름: 주를 가로로 놓아 짧게
+    var TREND = 6, ks = [];
+    for (var k = Math.max(0, j - TREND + 1); k <= j; k++) ks.push(k);
+    var line = function(label, fn){
+      return '<tr>' + td(label) + ks.map(function(k){ return fn(k); }).join('') + '</tr>';
+    };
+    h += '<h2>최근 ' + ks.length + '주 흐름</h2>' + rpTable(['구분'].concat(ks.map(function(k){
+        return S.data.weeks[k].month + '/' + S.data.weeks[k].day;
+      })), [
+      line('주일예배', function(k){ var a = weekStats('w', k); return td(a.done ? a.att + '명<small>' + pct(a.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(a.rate)); }),
+      line('순모임', function(k){ var b = weekStats('g', k); return td(b.done ? b.att + '명<small>' + pct(b.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(b.rate)); }),
+      line('모인 순', function(k){ var c = cellMeetings(k); return td(c.total ? c.did + ' / ' + c.total : '—'); }),
+      line('기록 지역', function(k){ var a = weekStats('w', k); return td(a.done + ' / ' + a.total); })
+    ]);
+
+    // 확인할 일: 미기록 지역만 짧게
+    var miss = [];
+    ['w', 'g'].forEach(function(kind){
+      var names = [];
+      S.data.regions.forEach(function(r, i){
+        if (applies(r, kind) && !S.rec[r.id][kind][j]) names.push(esc(regionNo(r, i)) + '지역(' + esc(r.leader || '미지정') + ')');
+      });
+      if (names.length) miss.push('<li>' + (kind === 'w' ? '주일예배' : '순모임') + ' 미기록: ' + names.join(', ') + '</li>');
+    });
+    h += '<h2>확인할 일</h2><ul class="one-chk">' +
+      (miss.length ? miss.join('') : '<li>모든 지역이 이번 주 기록을 마쳤습니다.</li>') + '</ul>';
+
+    h += '<p class="rp-foot">▲▼는 지난주 대비 인원 차이 · 출석률 75% 이상 초록, 50% 이상 노랑, 그 아래 붉은색 · ' +
+      '기록하지 않은 주와 지역장 행은 셈에서 뺌 · 순별 내용은 [주간 리포트]에서 볼 수 있습니다.</p>';
+
+    document.getElementById('onepage').innerHTML = h;
   }
 
   var toastTimer = null;
