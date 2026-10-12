@@ -271,6 +271,9 @@ table.rp.care td.why{text-align:left; white-space:normal; min-width:180px;}
     g: ['#faf5ee','#f5e3cc','#ebc99c','#dca868','#c9863a','#a8661d']
   };
 
+  // 버전: 고칠 때마다 올리고 CHANGELOG.md 에 적는다. 앱 맨 위 부제에 보인다.
+  var APP_VERSION = 'v2.3';
+
   var S = { data: null, week: 0, open: {}, rec: {}, view: 'dash' };
   try { var sv = localStorage.getItem('adminView'); if (sv === 'rep' || sv === 'one' || sv === 'care') S.view = sv; } catch (e) {}
 
@@ -289,7 +292,7 @@ table.rp.care td.why{text-align:left; white-space:normal; min-width:180px;}
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('body').classList.remove('hidden');
         document.getElementById('title').textContent = data.title + ' 출석 현황';
-        document.getElementById('sub').textContent = data.at + ' 기준 · ' + data.regions.length + '개 지역';
+        document.getElementById('sub').textContent = data.at + ' 기준 · ' + data.regions.length + '개 지역 · ' + APP_VERSION;
         if (force) toast('시트를 다시 읽었습니다');
         render();
       })
