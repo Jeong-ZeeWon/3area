@@ -121,6 +121,70 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
 .toast.on{opacity:.92;}
 .hidden{display:none !important;}
 
+/* ---------- 보기 전환 (현황 | 주간 리포트) ---------- */
+.views{display:flex; gap:3px; background:rgba(255,255,255,.12); border-radius:12px; padding:3px; margin-bottom:8px; width:max-content; max-width:100%; overflow-x:auto; scrollbar-width:none;}
+.views::-webkit-scrollbar{display:none;}
+.vw{flex:0 0 auto; white-space:nowrap; border:0; background:transparent; color:#fff; padding:6px 16px; border-radius:9px; font-size:13px; font-weight:500; cursor:pointer;}
+.vw.on{background:#fff; color:var(--brand); font-weight:700;}
+
+/* ---------- 주간 리포트 (문서 모양) ---------- */
+.paper{background:#fff; border:1px solid var(--line); border-radius:6px; box-shadow:var(--sh-1); max-width:820px; margin:0 auto; padding:40px 44px 36px;}
+@media (max-width:600px){ .paper{padding:24px 16px 28px; margin:0 -14px; border-radius:0; border-left:0; border-right:0;} }
+.rp-hd{border-bottom:2px solid var(--brand); padding-bottom:12px;}
+.rp-hd small{font-size:12.5px; color:var(--muted); font-weight:700;}
+.rp-hd h1{margin:2px 0; font-size:24px; letter-spacing:-.03em; color:var(--brand);}
+.rp-hd p{margin:0; font-size:12.5px; color:var(--muted);}
+.paper h2{font-size:16px; color:var(--brand); margin:26px 0 8px; letter-spacing:-.02em;}
+.paper h3{font-size:13.5px; margin:18px 0 6px;}
+.paper h3 small{font-weight:500; color:var(--muted); margin-left:6px;}
+.rp-tw{overflow-x:auto;}
+table.rp{width:100%; border-collapse:collapse; font-size:13px;}
+table.rp th, table.rp td{border:1px solid var(--line); padding:6px 8px; text-align:center; white-space:nowrap;}
+table.rp thead th{background:var(--brand); color:#fff; font-weight:700; border-color:var(--brand);}
+table.rp tbody td:first-child{text-align:left; font-weight:700;}
+table.rp tr.tot td{background:var(--card-2); font-weight:700;}
+table.rp small{color:var(--muted); font-weight:500; margin-left:3px;}
+table.rp .good{color:var(--good);} table.rp .mid{color:var(--mid);} table.rp .low{color:var(--low);}
+table.rp .na{color:var(--muted); font-weight:500;}
+table.rp.kv th{background:var(--card-2); color:var(--ink); text-align:left; width:130px; font-weight:700;}
+table.rp.kv td{text-align:left; white-space:normal; font-weight:700; font-size:14px;}
+table.rp.kv .dl{font-size:12px; font-weight:500; margin-top:2px;}
+.rp-note{font-size:11.5px; color:var(--muted); margin:5px 0 0;}
+.rp-list{margin:0; padding-left:18px; font-size:13px;}
+.rp-list li{margin:4px 0;}
+.rp-list li div{color:var(--ink-2); font-size:12.5px;}
+.rp-list a{color:var(--brand-2); text-decoration:none;}
+.rp-foot{font-size:11.5px; color:var(--muted); line-height:1.7; margin:24px 0 0; padding-top:12px; border-top:1px solid var(--line);}
+
+/* ---------- 한 장 요약 ---------- */
+.one{max-width:820px; padding:32px 36px 28px;}
+.one .rp-hd h1{font-size:21px;}
+.one h2{font-size:14px; margin:18px 0 6px;}
+.ob-row{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px;}
+@media (max-width:600px){ .ob-row{grid-template-columns:repeat(2,1fr);} }
+.ob{border:1px solid var(--line); border-radius:8px; padding:9px 11px; min-width:0;}
+.ob small{display:block; font-size:11.5px; color:var(--ink-2); font-weight:700;}
+.ob b{display:block; font-size:21px; letter-spacing:-.03em; line-height:1.25; margin-top:2px;}
+.ob b em{font-style:normal; font-size:12px; color:var(--muted); font-weight:500; margin-left:2px;}
+.ob p{margin:2px 0 0; font-size:11px; color:var(--muted);}
+.ob.good b{color:var(--good);} .ob.mid b{color:var(--mid);} .ob.low b{color:var(--low);}
+.one table.rp{font-size:12px;}
+.one table.rp th, .one table.rp td{padding:4px 6px;}
+.one-chk{font-size:12px; margin:0; padding-left:16px; color:var(--ink-2);}
+.one-chk li{margin:2px 0;}
+.one .rp-foot{margin-top:14px; padding-top:8px; font-size:10.5px;}
+
+/* ---------- 관리순원 ---------- */
+.care-sum{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:14px 0 16px;}
+.care-sum .ob b{font-size:24px;}
+.paper h2 em{font-style:normal; font-size:13px; color:var(--muted); font-weight:500; margin-left:6px;}
+.care-rule{font-size:12px; color:var(--ink-2); background:var(--card-2); border:1px solid var(--line); border-radius:8px; padding:8px 11px; margin:0 0 8px;}
+table.rp.care td.nm{font-weight:700; white-space:nowrap;}
+table.rp.care td.tl{white-space:nowrap;}
+table.rp.care td.tl a{color:var(--brand-2); text-decoration:none;}
+table.rp.care td.why{text-align:left; white-space:normal; min-width:180px;}
+.care-none{font-size:13px; color:var(--muted); margin:4px 0 0;}
+
 /* ---------- 인쇄 ---------- */
 @media print{
   body{background:#fff; font-size:12px;}
@@ -131,6 +195,13 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   .hm-wrap{overflow:visible;}
   .hm th.rh{position:static;}
   .cards{grid-template-columns:repeat(4,1fr);}
+  .paper{box-shadow:none; border:0; padding:0; max-width:none; margin:0;}
+  body.rep .top, body.one .top, body.care .top{display:none;}
+  body.one{font-size:11px;}
+  .one .ob-row{grid-template-columns:repeat(4,1fr);}
+  @page{size:A4; margin:12mm;}
+  .rp-tw{overflow:visible;}
+  .paper table{break-inside:avoid;}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
 }
 </style>
@@ -147,6 +218,12 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     <button class="tbtn" onclick="window.print()">인쇄</button>
   </div>
   <div class="ctl">
+    <div class="views">
+      <button class="vw on" id="vDash" onclick="setView('dash')">현황</button>
+      <button class="vw" id="vRep" onclick="setView('rep')">주간 리포트</button>
+      <button class="vw" id="vOne" onclick="setView('one')">한 장 요약</button>
+      <button class="vw" id="vCare" onclick="setView('care')">관리순원</button>
+    </div>
     <div class="weeks" id="weeks"></div>
   </div>
 </header>
@@ -177,6 +254,10 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
 
     <p class="foot" id="foot"></p>
   </div>
+
+  <article id="report" class="paper hidden"></article>
+  <article id="onepage" class="paper one hidden"></article>
+  <article id="carepage" class="paper hidden"></article>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -190,7 +271,11 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     g: ['#faf5ee','#f5e3cc','#ebc99c','#dca868','#c9863a','#a8661d']
   };
 
-  var S = { data: null, week: 0, open: {}, rec: {} };
+  // 버전: 고칠 때마다 올리고 CHANGELOG.md 에 적는다. 앱 맨 위 부제에 보인다.
+  var APP_VERSION = 'v2.3';
+
+  var S = { data: null, week: 0, open: {}, rec: {}, view: 'dash' };
+  try { var sv = localStorage.getItem('adminView'); if (sv === 'rep' || sv === 'one' || sv === 'care') S.view = sv; } catch (e) {}
 
   /* ---------------- 불러오기 ---------------- */
   function load(force){
@@ -207,7 +292,7 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('body').classList.remove('hidden');
         document.getElementById('title').textContent = data.title + ' 출석 현황';
-        document.getElementById('sub').textContent = data.at + ' 기준 · ' + data.regions.length + '개 지역';
+        document.getElementById('sub').textContent = data.at + ' 기준 · ' + data.regions.length + '개 지역 · ' + APP_VERSION;
         if (force) toast('시트를 다시 읽었습니다');
         render();
       })
@@ -319,12 +404,28 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
 
   /* ---------------- 그리기 ---------------- */
   function render(){
+    var v = S.data.weeks.length ? S.view : 'dash';
+    document.getElementById('vDash').classList.toggle('on', v === 'dash');
+    document.getElementById('vRep').classList.toggle('on', v === 'rep');
+    document.getElementById('vOne').classList.toggle('on', v === 'one');
+    document.getElementById('vCare').classList.toggle('on', v === 'care');
+    document.body.classList.toggle('care', v === 'care');
+    document.getElementById('carepage').classList.toggle('hidden', v !== 'care');
+    document.body.classList.toggle('rep', v === 'rep');
+    document.body.classList.toggle('one', v === 'one');
+    document.getElementById('body').classList.toggle('hidden', v !== 'dash');
+    document.getElementById('report').classList.toggle('hidden', v !== 'rep');
+    document.getElementById('onepage').classList.toggle('hidden', v !== 'one');
     if (!S.data.weeks.length){
       document.getElementById('body').innerHTML =
         '<div class="card"><div class="empty">아직 지난 주일이 없습니다. 첫 주일이 지나면 현황이 나타납니다.</div></div>';
       return;
     }
-    renderWeeks(); renderCards(); renderChecks();
+    renderWeeks();
+    if (v === 'rep'){ renderReport(); return; }
+    if (v === 'one'){ renderOnePage(); return; }
+    if (v === 'care'){ renderCare(); return; }
+    renderCards(); renderChecks();
     renderHeat('w', 'heatW', 'scaleW');
     renderHeat('g', 'heatG', 'scaleG');
     document.getElementById('foot').textContent =
@@ -333,6 +434,13 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   }
 
   function setWeek(j){ S.week = j; render(); }
+
+  function setView(v){
+    S.view = v;
+    try { localStorage.setItem('adminView', v); } catch (e) {}
+    if (S.data) render();
+    window.scrollTo(0, 0);
+  }
 
   function renderWeeks(){
     var box = document.getElementById('weeks');
@@ -381,9 +489,18 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
   }
 
   function renderChecks(){
-    var j = S.week, items = [];
+    var j = S.week;
     var lab = S.data.weeks[j].month + '월 ' + S.data.weeks[j].day + '일';
     document.getElementById('checkSub').textContent = lab + ' 기준';
+    document.getElementById('checks').innerHTML = checkItems(j).map(function(it){
+      return '<div class="chk"><span class="ic ' + (it.ok ? 'ok">✓' : 'warn">!') + '</span>' +
+        '<div class="tx"><b>' + it.t + '</b>' + (it.d ? '<div>' + it.d + '</div>' : '') + '</div></div>';
+    }).join('');
+  }
+
+  // 기록 점검 항목: 현황 화면과 주간 리포트가 함께 쓴다
+  function checkItems(j){
+    var items = [];
 
     function missing(kind){
       var list = [];
@@ -421,11 +538,7 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
       items.push({ ok: false, t: '시트 머리글 확인 필요', d: esc(w) + '<br>해당: ' + warn[w].join(', ') });
     });
     (S.data.errors || []).forEach(function(e){ items.push({ ok: false, t: '읽지 못한 탭', d: esc(e) }); });
-
-    document.getElementById('checks').innerHTML = items.map(function(it){
-      return '<div class="chk"><span class="ic ' + (it.ok ? 'ok">✓' : 'warn">!') + '</span>' +
-        '<div class="tx"><b>' + it.t + '</b>' + (it.d ? '<div>' + it.d + '</div>' : '') + '</div></div>';
-    }).join('');
+    return items;
   }
 
   // 두 표를 따로 펼치고 접을 수 있도록 표 종류와 지역을 함께 기억한다
@@ -491,6 +604,289 @@ table.hm{border-collapse:separate; border-spacing:3px; width:100%; min-width:max
     document.getElementById(scaleId).innerHTML = '칸 색은 출석률 ' +
       HEAT[kind].map(function(c){ return '<i style="background:' + c + '"></i>'; }).join('') +
       ' <span>0 → 100%</span> · <i style="background:repeating-linear-gradient(45deg,#f3efe8,#f3efe8 4px,#faf8f5 4px,#faf8f5 8px)"></i> 아직 기록 안 한 주';
+  }
+
+  /* ---------------- 주간 리포트 ---------------- */
+  function rateCls(rate){ return rate == null ? '' : rate >= .75 ? 'good' : rate >= .5 ? 'mid' : 'low'; }
+  function cntText(t){ return t ? t.att + '명<small>' + pct(t.rate) + '</small>' : '<span class="na">미기록</span>'; }
+  function arrow(a, b){
+    if (!a || !b) return '';
+    var d = a.att - b.att;
+    return d > 0 ? ' <span class="up">▲' + d + '</span>' : d < 0 ? ' <span class="down">▼' + (-d) + '</span>' : '';
+  }
+  function groupMet(g, j){
+    return g.members.some(function(m){ return marksOf(m, 'g').charAt(j) === '1'; });
+  }
+  // 0주부터 j주까지 기록된 주의 평균 출석 인원
+  function avgCount(r, members, kind, j){
+    var att = 0, weeks = 0;
+    for (var k = 0; k <= j; k++){
+      var t = tally(r, members, kind, k);
+      if (!t) continue;
+      att += t.att; weeks++;
+    }
+    return weeks ? Math.round(att / weeks) : null;
+  }
+  function rpTable(head, rows, cls){
+    return '<div class="rp-tw">' + (cls ? '<table class="rp ' + cls + '">' : '<table class="rp">') +
+      (head ? '<thead><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr></thead>' : '') +
+      '<tbody>' + rows.join('') + '</tbody></table></div>';
+  }
+  function td(html, cls){ return (cls ? '<td class="' + cls + '">' : '<td>') + html + '</td>'; }
+
+  function renderReport(){
+    var j = S.week, wk = S.data.weeks[j];
+    var w = weekStats('w', j), g = weekStats('g', j), cm = cellMeetings(j);
+    var h = '';
+
+    h += '<header class="rp-hd"><small>' + esc(S.data.title) + ' 주간 출석 리포트</small>' +
+      '<h1>' + wk.month + '월 ' + wk.day + '일 주일</h1>' +
+      '<p>' + esc(S.data.at) + ' 기준 · ' + S.data.regions.length + '개 지역</p></header>';
+
+    // 1. 이번 주 한눈에
+    var kv = function(k, v, cls){ return '<tr><th>' + k + '</th>' + td(v, cls) + '</tr>'; };
+    h += '<h2>1. 이번 주 한눈에</h2>' + rpTable(null, [
+      kv('순모임 한 순', cm.total ? cm.did + '순 / ' + cm.total + '순<small>' + pct(cm.did / cm.total) + '</small>' : '순모임 칸 없음',
+        cm.total ? rateCls(cm.did / cm.total) : ''),
+      kv('주일예배 출석', w.done ? w.att + '명<small>출석률 ' + pct(w.rate) + '</small><div class="dl">' + delta('w', j) + '</div>' : '미기록', rateCls(w.rate)),
+      kv('순모임 참석', g.done ? g.att + '명<small>참석률 ' + pct(g.rate) + '</small><div class="dl">' + delta('g', j) + '</div>' : '미기록', rateCls(g.rate)),
+      kv('기록 완료 지역', '주일예배 ' + w.done + ' / ' + w.total + ' 지역 · 순모임 ' + g.done + ' / ' + g.total + ' 지역',
+        (w.done < w.total || g.done < g.total) ? 'low' : '')
+    ], 'kv');
+
+    // 2. 지역별 현황
+    var rows = [], people = 0;
+    S.data.regions.forEach(function(r, i){
+      var all = allMembers(r);
+      people += all.length;
+      var tw = tally(r, all, 'w', j), tg = tally(r, all, 'g', j);
+      var met = r.groups.filter(function(gr){ return groupMet(gr, j); }).length;
+      rows.push('<tr>' + td(esc(regionNo(r, i)) + '지역') + td(esc(r.leader || '미지정')) + td(all.length + '명') +
+        td(cntText(tw) + arrow(tw, tally(r, all, 'w', j - 1)), tw ? rateCls(tw.rate) : '') +
+        (r.hasGroup ? td(cntText(tg) + arrow(tg, tally(r, all, 'g', j - 1)), tg ? rateCls(tg.rate) : '') : td('칸 없음', 'na')) +
+        td(!r.hasGroup ? '—' : S.rec[r.id].g[j] ? met + ' / ' + r.groups.length : '<span class="na">미기록</span>') + '</tr>');
+    });
+    rows.push('<tr class="tot">' + td('합계') + td('') + td(people + '명') +
+      td(w.done ? w.att + '명<small>' + pct(w.rate) + '</small>' : '미기록') +
+      td(g.done ? g.att + '명<small>' + pct(g.rate) + '</small>' : '미기록') +
+      td(cm.total ? cm.did + ' / ' + cm.total : '—') + '</tr>');
+    h += '<h2>2. 지역별 현황</h2>' + rpTable(['지역', '지역장', '인원', '주일예배', '순모임', '모인 순'], rows) +
+      '<p class="rp-note">▲▼는 지난주와 비교한 인원 차이입니다. 출석률 75% 이상은 초록, 50% 이상은 노랑, 그 아래는 붉은색입니다.</p>';
+
+    // 3. 최근 흐름
+    var TREND = 6;
+    rows = [];
+    for (var k = Math.max(0, j - TREND + 1); k <= j; k++){
+      var a = weekStats('w', k), b = weekStats('g', k), c = cellMeetings(k);
+      rows.push((k === j ? '<tr class="tot">' : '<tr>') + td(S.data.weeks[k].month + '월 ' + S.data.weeks[k].day + '일') +
+        td(a.done ? a.att + '명<small>' + pct(a.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(a.rate)) +
+        td(b.done ? b.att + '명<small>' + pct(b.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(b.rate)) +
+        td(c.total ? c.did + ' / ' + c.total : '—') + td(a.done + ' / ' + a.total) + '</tr>');
+    }
+    h += '<h2>3. 최근 ' + TREND + '주 흐름</h2>' + rpTable(['주일', '주일예배', '순모임', '모인 순', '기록 지역'], rows) +
+      '<p class="rp-note">주별 합계에는 그 주를 기록한 지역만 들어갑니다. 기록 지역 수가 다르면 인원을 바로 비교하기 어렵습니다.</p>';
+
+    // 4. 순별 현황
+    h += '<h2>4. 순별 현황</h2>';
+    S.data.regions.forEach(function(r, i){
+      h += '<h3>' + esc(regionNo(r, i)) + '지역<small>지역장 ' + esc(r.leader || '미지정') + ' · ' + allMembers(r).length + '명</small></h3>';
+      var gr = r.groups.map(function(gp){
+        var tw = tally(r, gp.members, 'w', j), tg = tally(r, gp.members, 'g', j);
+        var aw = avgCount(r, gp.members, 'w', j), ag = avgCount(r, gp.members, 'g', j);
+        return '<tr>' + td(esc(gp.name)) + td(esc(leadOf(gp) || '—')) + td(gp.members.length + '명') +
+          td(tw ? tw.att + ' / ' + tw.base : '<span class="na">미기록</span>', tw ? rateCls(tw.rate) : '') +
+          (r.hasGroup ? td(tg ? tg.att + ' / ' + tg.base : '<span class="na">미기록</span>', tg ? rateCls(tg.rate) : '') : td('칸 없음', 'na')) +
+          td('예배 ' + (aw == null ? '—' : aw + '명') + (r.hasGroup ? ' · 순모임 ' + (ag == null ? '—' : ag + '명') : '')) + '</tr>';
+      });
+      h += rpTable(['순', '순장', '인원', '주일예배', '순모임', '주 평균'], gr);
+    });
+
+    // 5. 기록 점검
+    h += '<h2>5. 기록 점검</h2><ul class="rp-list">' + checkItems(j).map(function(it){
+      return '<li><b>' + it.t + '</b>' + (it.d ? '<div>' + it.d + '</div>' : '') + '</li>';
+    }).join('') + '</ul>';
+
+    h += careSection(j, '6. ');
+
+    h += '<p class="rp-foot">시트에 있는 정보만 사용했습니다. 한 지역에서 아무도 체크하지 않은 주는 아직 기록하지 않은 주로 보고 ' +
+      '출석률 계산에서 뺐습니다. 지역장 행은 순 안의 같은 이름과 겹치므로 셈에서 뺐습니다. ' +
+      '순모임은 순원 한 명이라도 체크되면 그 순이 모인 것으로 셉니다. 위쪽 [인쇄]를 누르면 이 리포트만 인쇄하거나 PDF로 저장할 수 있습니다.</p>';
+
+    document.getElementById('report').innerHTML = h;
+  }
+
+  /* ---------------- 한 장 요약 (A4 한 쪽) ---------------- */
+  function renderOnePage(){
+    var j = S.week, wk = S.data.weeks[j];
+    var w = weekStats('w', j), g = weekStats('g', j), cm = cellMeetings(j);
+    var h = '';
+
+    h += '<header class="rp-hd"><small>' + esc(S.data.title) + ' 주간 출석 요약</small>' +
+      '<h1>' + wk.month + '월 ' + wk.day + '일 주일</h1>' +
+      '<p>' + esc(S.data.at) + ' 기준 · ' + S.data.regions.length + '개 지역</p></header>';
+
+    var box = function(label, value, unit, note, cls){
+      return '<div class="ob ' + (cls || '') + '"><small>' + label + '</small><b>' + value +
+        '<em>' + unit + '</em></b><p>' + note + '</p></div>';
+    };
+    h += '<div class="ob-row">' +
+      box('순모임 한 순', cm.total ? cm.did : '—', cm.total ? '순 / ' + cm.total + '순' : '',
+        cm.total ? pct(cm.did / cm.total) : '순모임 칸 없음', cm.total ? rateCls(cm.did / cm.total) : '') +
+      box('주일예배 출석', w.done ? w.att : '—', w.done ? '명 · ' + pct(w.rate) : '', delta('w', j), rateCls(w.rate)) +
+      box('순모임 참석', g.done ? g.att : '—', g.done ? '명 · ' + pct(g.rate) : '', delta('g', j), rateCls(g.rate)) +
+      box('기록 완료', w.done, '/ ' + w.total + ' 지역', '순모임 ' + g.done + ' / ' + g.total + ' 지역',
+        (w.done < w.total || g.done < g.total) ? 'low' : '') +
+      '</div>';
+
+    // 지역별
+    var rows = [], people = 0;
+    S.data.regions.forEach(function(r, i){
+      var all = allMembers(r);
+      people += all.length;
+      var tw = tally(r, all, 'w', j), tg = tally(r, all, 'g', j);
+      var met = r.groups.filter(function(gr){ return groupMet(gr, j); }).length;
+      rows.push('<tr>' + td(esc(regionNo(r, i)) + '지역') + td(esc(r.leader || '미지정')) + td(all.length + '명') +
+        td(cntText(tw) + arrow(tw, tally(r, all, 'w', j - 1)), tw ? rateCls(tw.rate) : '') +
+        (r.hasGroup ? td(cntText(tg) + arrow(tg, tally(r, all, 'g', j - 1)), tg ? rateCls(tg.rate) : '') : td('칸 없음', 'na')) +
+        td(!r.hasGroup ? '—' : S.rec[r.id].g[j] ? met + ' / ' + r.groups.length : '<span class="na">미기록</span>') + '</tr>');
+    });
+    rows.push('<tr class="tot">' + td('합계') + td('') + td(people + '명') +
+      td(w.done ? w.att + '명<small>' + pct(w.rate) + '</small>' : '미기록') +
+      td(g.done ? g.att + '명<small>' + pct(g.rate) + '</small>' : '미기록') +
+      td(cm.total ? cm.did + ' / ' + cm.total : '—') + '</tr>');
+    h += '<h2>지역별 현황</h2>' + rpTable(['지역', '지역장', '인원', '주일예배', '순모임', '모인 순'], rows);
+
+    // 최근 흐름: 주를 가로로 놓아 짧게
+    var TREND = 6, ks = [];
+    for (var k = Math.max(0, j - TREND + 1); k <= j; k++) ks.push(k);
+    var line = function(label, fn){
+      return '<tr>' + td(label) + ks.map(function(k){ return fn(k); }).join('') + '</tr>';
+    };
+    h += '<h2>최근 ' + ks.length + '주 흐름</h2>' + rpTable(['구분'].concat(ks.map(function(k){
+        return S.data.weeks[k].month + '/' + S.data.weeks[k].day;
+      })), [
+      line('주일예배', function(k){ var a = weekStats('w', k); return td(a.done ? a.att + '명<small>' + pct(a.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(a.rate)); }),
+      line('순모임', function(k){ var b = weekStats('g', k); return td(b.done ? b.att + '명<small>' + pct(b.rate) + '</small>' : '<span class="na">미기록</span>', rateCls(b.rate)); }),
+      line('모인 순', function(k){ var c = cellMeetings(k); return td(c.total ? c.did + ' / ' + c.total : '—'); }),
+      line('기록 지역', function(k){ var a = weekStats('w', k); return td(a.done + ' / ' + a.total); })
+    ]);
+
+    // 확인할 일: 미기록 지역만 짧게
+    var miss = [];
+    ['w', 'g'].forEach(function(kind){
+      var names = [];
+      S.data.regions.forEach(function(r, i){
+        if (applies(r, kind) && !S.rec[r.id][kind][j]) names.push(esc(regionNo(r, i)) + '지역(' + esc(r.leader || '미지정') + ')');
+      });
+      if (names.length) miss.push('<li>' + (kind === 'w' ? '주일예배' : '순모임') + ' 미기록: ' + names.join(', ') + '</li>');
+    });
+    h += '<h2>확인할 일</h2><ul class="one-chk">' +
+      (miss.length ? miss.join('') : '<li>모든 지역이 이번 주 기록을 마쳤습니다.</li>') + '</ul>';
+
+    h += '<p class="rp-foot">▲▼는 지난주 대비 인원 차이 · 출석률 75% 이상 초록, 50% 이상 노랑, 그 아래 붉은색 · ' +
+      '기록하지 않은 주와 지역장 행은 셈에서 뺌 · 순별 내용은 [주간 리포트]에서 볼 수 있습니다.</p>';
+
+    document.getElementById('onepage').innerHTML = h;
+  }
+
+  /* ---------------- 관리순원 (장기결석 · 연락필요) ---------------- */
+  // 연락필요: 최근 CARE.MISS 번 이상 연달아 예배에 빠졌고, 그 전에는 CARE.MIN_ATT 번 이상·CARE.MIN_RATE 이상 나온 사람
+  var CARE = { MISS: 2, MIN_ATT: 2, MIN_RATE: .5 };
+
+  // j주까지 그 사람의 주일예배 기록: 그 지역이 기록한 주 가운데 그 사람 칸이 있는 주만 센다
+  function careOf(r, m, j){
+    var seq = [];
+    for (var k = 0; k <= j; k++){
+      if (!S.rec[r.id].w[k]) continue;
+      var c = marksOf(m, 'w').charAt(k);
+      if (c === '-') continue;
+      seq.push({ k: k, on: c === '1' });
+    }
+    var att = seq.filter(function(x){ return x.on; }).length;
+    var streak = 0;
+    for (var i = seq.length - 1; i >= 0 && !seq[i].on; i--) streak++;
+    var prior = seq.slice(0, seq.length - streak);
+    var last = prior.length ? prior[prior.length - 1].k : -1;
+    return { weeks: seq.length, att: att, streak: streak, prior: prior.length, last: last };
+  }
+
+  function careLists(j){
+    var long = [], call = [];
+    S.data.regions.forEach(function(r, i){
+      r.groups.forEach(function(g){
+        g.members.forEach(function(m){
+          var c = careOf(r, m, j);
+          if (!c.weeks) return;
+          var row = { r: r, i: i, g: g, m: m, c: c };
+          if (!c.att) long.push(row);
+          else if (c.streak >= CARE.MISS && c.prior >= CARE.MIN_ATT && c.att / c.prior >= CARE.MIN_RATE) call.push(row);
+        });
+      });
+    });
+    call.sort(function(a, b){ return b.c.streak - a.c.streak || a.i - b.i; });
+    return { long: long, call: call };
+  }
+
+  function careRows(list, why){
+    return list.map(function(x){
+      var phone = x.m.phone
+        ? '<a href="tel:' + esc(x.m.phone.replace(/[^0-9+]/g, '')) + '">' + esc(x.m.phone) + '</a>' : '—';
+      return '<tr>' + td(esc(regionNo(x.r, x.i)) + '지역') + td(esc(x.g.name)) +
+        td(esc(x.m.name) + (x.m.lead ? '<small>순장</small>' : ''), 'nm') + td(phone, 'tl') + td(why(x), 'why') + '</tr>';
+    });
+  }
+
+  function gCount(x){
+    if (!x.r.hasGroup) return '';
+    var n = 0, base = 0;
+    for (var k = 0; k <= S.week; k++){
+      if (!S.rec[x.r.id].g[k]) continue;
+      var c = marksOf(x.m, 'g').charAt(k);
+      if (c === '-') continue;
+      base++; if (c === '1') n++;
+    }
+    return base ? ' · 순모임 ' + n + '/' + base : '';
+  }
+
+  // 관리순원 장. no 는 장 번호('6. ' 등), 관리순원 화면에서는 비워 둔다.
+  function careSection(j, no){
+    var L = careLists(j), h = '';
+    var wl = function(k){ return S.data.weeks[k].month + '/' + S.data.weeks[k].day; };
+
+    h += '<h2>' + (no || '') + '관리순원</h2>';
+    h += '<p class="care-rule"><b>연락 필요</b>: 최근 ' + CARE.MISS + '주 이상 연달아 주일예배에 빠졌지만 그 전에는 절반 이상 나온 성도 · ' +
+      '<b>장기 결석</b>: ' + wl(j) + '까지 기록된 주일에 한 번도 예배에 나오지 않은 순원</p>';
+
+    h += '<h3>연락 필요<small>' + L.call.length + '명</small></h3>';
+    h += L.call.length
+      ? rpTable(['지역', '순', '이름', '연락처', '내용'], careRows(L.call, function(x){
+          return '<b class="low">' + x.c.streak + '주 연속 결석</b> · 마지막 출석 ' + wl(x.c.last) +
+            ' · 그 전 ' + x.c.prior + '주 중 ' + x.c.att + '번 출석';
+        }), 'care')
+      : '<p class="care-none">이번 주에는 해당하는 성도가 없습니다.</p>';
+
+    h += '<h3>장기 결석<small>' + L.long.length + '명</small></h3>';
+    h += L.long.length
+      ? rpTable(['지역', '순', '이름', '연락처', '내용'], careRows(L.long, function(x){
+          return '예배 0/' + x.c.weeks + gCount(x);
+        }), 'care')
+      : '<p class="care-none">이번 주에는 해당하는 순원이 없습니다.</p>';
+    return h;
+  }
+
+  function renderCare(){
+    var j = S.week, wk = S.data.weeks[j], L = careLists(j);
+    var h = '<header class="rp-hd"><small>' + esc(S.data.title) + ' 관리순원</small>' +
+      '<h1>' + wk.month + '월 ' + wk.day + '일 주일 기준</h1>' +
+      '<p>' + esc(S.data.at) + ' 기준 · ' + S.data.regions.length + '개 지역</p></header>';
+    h += '<div class="care-sum">' +
+      '<div class="ob' + (L.call.length ? ' low' : '') + '"><small>연락 필요</small><b>' + L.call.length + '<em>명</em></b><p>잘 나오다가 최근 빠진 성도</p></div>' +
+      '<div class="ob"><small>장기 결석</small><b>' + L.long.length + '<em>명</em></b><p>한 번도 예배에 나오지 않은 순원</p></div>' +
+      '</div>';
+    h += careSection(j, '').replace('<h2>관리순원</h2>', '');
+    h += '<p class="rp-foot">주일예배 출석으로 판단합니다. 그 지역이 아무도 체크하지 않은 주와 그 사람 칸이 없는 주는 세지 않습니다. ' +
+      '지역장 행은 순 안의 같은 이름과 겹치므로 뺐습니다. 주차를 바꾸면 그 주일까지의 기록으로 다시 계산합니다.</p>';
+    document.getElementById('carepage').innerHTML = h;
   }
 
   var toastTimer = null;
