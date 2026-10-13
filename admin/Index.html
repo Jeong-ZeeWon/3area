@@ -272,7 +272,7 @@ table.rp.care td.why{text-align:left; white-space:normal; min-width:180px;}
   };
 
   // 버전: 고칠 때마다 올리고 CHANGELOG.md 에 적는다. 앱 맨 위 부제에 보인다.
-  var APP_VERSION = 'v2.3';
+  var APP_VERSION = 'v2.4';
 
   var S = { data: null, week: 0, open: {}, rec: {}, view: 'dash' };
   try { var sv = localStorage.getItem('adminView'); if (sv === 'rep' || sv === 'one' || sv === 'care') S.view = sv; } catch (e) {}
@@ -823,7 +823,6 @@ table.rp.care td.why{text-align:left; white-space:normal; min-width:180px;}
         });
       });
     });
-    call.sort(function(a, b){ return b.c.streak - a.c.streak || a.i - b.i; });
     return { long: long, call: call };
   }
 
